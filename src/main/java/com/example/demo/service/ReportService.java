@@ -10,7 +10,6 @@ import com.example.demo.dto.ReportData.HabitReportData;
 import java.time.Instant;
 import java.time.YearMonth;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,7 @@ public class ReportService {
 
     public ReportData createReportData(User user, Long reportTime) {
         YearMonth reportMonth = extractReportTime(reportTime);
-        List<HabitReportData> habitReportDataList = createHabitReportDatas(user.getId(), reportMonth);
+        List<HabitReportData> habitReportDataList = createHabitReportDatas(user, reportMonth);
         return new ReportData(user.getId(), user.getName(), user.getEmail(), habitReportDataList);
     }
 
@@ -41,18 +40,10 @@ public class ReportService {
         return YearMonth.from(Instant.ofEpochMilli(reportTime).atZone(ZoneId.systemDefault()));
     }
 
-    private List<HabitReportData> createHabitReportDatas(Long userId, YearMonth currentMonth) {
-        // 이거 유저가 이미 fetch join으로 모두 가져와서 문제가 된다...
-        // 다시 생각해보자.. 아래 쿼리들은 잘못된 쿼리 -> b/c 이미 User에 모든 정보가 다 있음
-        // 그런데, 내가 필요한 건 특정 월의 totalTrackingSize 다.
-        List<Habit> habits = habitRepository.findHabitList(userId);
-        List<HabitReportData> habitReportDataList = new ArrayList<>();
-
-        for (Habit habit : habits) {
-            HabitReportData habitReportData = createHabitReportData(currentMonth, habit);
-            habitReportDataList.add(habitReportData);
-        }
-        return habitReportDataList;
+    private List<HabitReportData> createHabitReportDatas(User user, YearMonth currentMonth) {
+        return user.getHabits().stream()
+                .map(habit -> createHabitReportData(currentMonth, habit))
+                .toList();
     }
 
     private HabitReportData createHabitReportData(YearMonth currentMonth, Habit habit) {
