@@ -1,39 +1,36 @@
-package com.example.demo.entity;
+package com.example.demo.infrastructure.entity;
 
-import jakarta.persistence.ElementCollection;
+import com.example.demo.domain.model.Habit;
+import com.example.demo.domain.model.HabitTracking;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.util.List;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "habit_formation_stages")
+@Table(name = "habit_trackings")
 @NoArgsConstructor
 @Getter
-public class HabitFormationStageEntity {
+public class HabitTrackingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int stage;
-
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "habit_id")
     private HabitEntity habit;
 
-    @ElementCollection
-    private List<String> questions;
+    private LocalDate completedDate;
 
-    @ElementCollection
-    private List<String> answers;
-
-    private String feedback;
+    public HabitTracking toHabitTracking(Habit habit) {
+        return new HabitTracking(id, habit, completedDate);
+    }
 }

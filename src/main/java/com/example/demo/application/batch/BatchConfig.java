@@ -1,9 +1,9 @@
-package com.example.demo.batch;
+package com.example.demo.application.batch;
 
+import com.example.demo.application.service.EmailService;
+import com.example.demo.application.service.ReportService;
 import com.example.demo.dto.ReportData;
-import com.example.demo.entity.UserEntity;
-import com.example.demo.service.EmailService;
-import com.example.demo.service.ReportService;
+import com.example.demo.infrastructure.entity.UserEntity;
 import jakarta.persistence.EntityManagerFactory;
 import java.time.Instant;
 import java.time.LocalDate;

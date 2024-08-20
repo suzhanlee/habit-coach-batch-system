@@ -1,6 +1,6 @@
 package com.example.demo.domain.repository;
 
-import com.example.demo.domain.User;
+import com.example.demo.domain.model.User;
 import java.util.List;
 
 public interface UserRepository {

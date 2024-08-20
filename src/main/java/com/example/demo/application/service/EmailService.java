@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.application.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;

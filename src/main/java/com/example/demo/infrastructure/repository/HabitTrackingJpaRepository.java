@@ -1,6 +1,6 @@
-package com.example.demo.repository;
+package com.example.demo.infrastructure.repository;
 
-import com.example.demo.entity.HabitTrackingEntity;
+import com.example.demo.infrastructure.entity.HabitTrackingEntity;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

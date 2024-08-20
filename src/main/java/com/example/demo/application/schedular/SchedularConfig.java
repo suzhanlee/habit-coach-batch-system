@@ -1,10 +1,9 @@
-package com.example.demo.config;
+package com.example.demo.application.schedular;
 
 import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
-import com.example.demo.schedular.BatchJobExecutor;
 import org.quartz.JobDetail;
 import org.quartz.Trigger;
 import org.springframework.beans.factory.annotation.Value;

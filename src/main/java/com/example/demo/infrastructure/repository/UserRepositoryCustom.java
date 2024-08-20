@@ -1,6 +1,6 @@
-package com.example.demo.repository;
+package com.example.demo.infrastructure.repository;
 
-import com.example.demo.entity.UserEntity;
+import com.example.demo.infrastructure.entity.UserEntity;
 import java.time.LocalDate;
 import java.util.Optional;
 

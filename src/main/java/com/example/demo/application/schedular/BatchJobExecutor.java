@@ -1,4 +1,4 @@
-package com.example.demo.schedular;
+package com.example.demo.application.schedular;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;

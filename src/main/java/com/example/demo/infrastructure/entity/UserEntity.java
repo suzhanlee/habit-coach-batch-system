@@ -1,12 +1,17 @@
-package com.example.demo.entity;
+package com.example.demo.infrastructure.entity;
 
-import com.example.demo.domain.User;
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
+import com.example.demo.domain.model.User;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users")
@@ -24,15 +29,15 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HabitEntity> habits = new ArrayList<>();
 
-    public User toUser() {
-        return new User(id, name, email);
-    }
-
     public static UserEntity fromUser(User user) {
         UserEntity userEntity = new UserEntity();
         userEntity.id = user.getId();
         userEntity.name = user.getName();
         userEntity.email = user.getEmail();
         return userEntity;
+    }
+
+    public User toUser() {
+        return new User(id, name, email);
     }
 }

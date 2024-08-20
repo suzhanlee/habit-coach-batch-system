@@ -1,9 +1,9 @@
-package com.example.demo.service;
+package com.example.demo.application.service;
 
-import com.example.demo.domain.Habit;
-import com.example.demo.domain.HabitFormationStage;
-import com.example.demo.domain.LLMClient;
-import com.example.demo.domain.User;
+import com.example.demo.domain.model.Habit;
+import com.example.demo.domain.model.HabitFormationStage;
+import com.example.demo.domain.model.LLMClient;
+import com.example.demo.domain.model.User;
 import com.example.demo.domain.repository.HabitRepository;
 import com.example.demo.dto.ReportData;
 import com.example.demo.dto.ReportData.HabitReportData;

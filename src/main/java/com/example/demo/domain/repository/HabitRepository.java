@@ -1,6 +1,6 @@
 package com.example.demo.domain.repository;
 
-import com.example.demo.domain.Habit;
+import com.example.demo.domain.model.Habit;
 import java.util.List;
 
 public interface HabitRepository {
