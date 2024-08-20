@@ -2,16 +2,49 @@ package com.example.demo.repository;
 
 import com.example.demo.domain.User;
 import com.example.demo.domain.repository.UserRepository;
+import com.example.demo.entity.QHabitEntity;
+import com.example.demo.entity.QHabitFormationStageEntity;
+import com.example.demo.entity.QHabitTrackingEntity;
+import com.example.demo.entity.QUserEntity;
 import com.example.demo.entity.UserEntity;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDate;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@RequiredArgsConstructor
-public class UserRepositoryImpl implements UserRepository {
+public class UserRepositoryImpl implements UserRepository, UserRepositoryCustom {
 
     private final UserJpaRepository userJpaRepository;
+    private final JPAQueryFactory queryFactory;
+
+    public UserRepositoryImpl(UserJpaRepository userJpaRepository, JPAQueryFactory queryFactory) {
+        this.userJpaRepository = userJpaRepository;
+        this.queryFactory = queryFactory;
+    }
+
+    @Override
+    public Optional<UserEntity> findUserWithHabitsAndTrackingsForMonth(Long userId, LocalDate startDate,
+                                                                       LocalDate endDate) {
+        QUserEntity userEntity = QUserEntity.userEntity;
+        QHabitEntity habitEntity = QHabitEntity.habitEntity;
+        QHabitFormationStageEntity habitFormationStageEntity = QHabitFormationStageEntity.habitFormationStageEntity;
+        QHabitTrackingEntity habitTrackingEntity = QHabitTrackingEntity.habitTrackingEntity;
+
+        UserEntity result = queryFactory
+                .selectFrom(userEntity)
+                .leftJoin(userEntity.habits, habitEntity).fetchJoin()
+                .leftJoin(habitEntity.formationStage, habitFormationStageEntity).fetchJoin()
+                .leftJoin(habitEntity.trackings, habitTrackingEntity)
+                .where(userEntity.id.eq(userId)
+                        .and(habitTrackingEntity.completedDate.between(startDate, endDate)
+                                .or(habitTrackingEntity.isNull())))
+                .distinct()
+                .fetchOne();
+
+        return Optional.ofNullable(result);
+    }
 
     @Override
     public User findById(Long id) {

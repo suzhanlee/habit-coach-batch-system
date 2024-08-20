@@ -5,8 +5,12 @@ import com.example.demo.entity.UserEntity;
 import com.example.demo.service.EmailService;
 import com.example.demo.service.ReportService;
 import jakarta.persistence.EntityManagerFactory;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -58,19 +62,30 @@ public class BatchConfig {
     public Step step(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
         return new StepBuilder("reportStep", jobRepository)
                 .<UserEntity, ReportData>chunk(10, transactionManager)
-                .reader(userWithHabitsReader())
+                .reader(userWithHabitsReader(null)) // reportTime으로 런타임에 대체된다.
                 .processor(reportProcessor(null)) // reportTime으로 런타임에 대체된다.
                 .writer(reportWriter())
                 .build();
     }
 
     @Bean
-    public JpaPagingItemReader<UserEntity> userWithHabitsReader() {
+    @StepScope
+    public JpaPagingItemReader<UserEntity> userWithHabitsReader(@Value("#{jobParameters['time']}") Long reportTime) {
+        LocalDate startDate = LocalDate.ofInstant(Instant.ofEpochMilli(reportTime), ZoneId.systemDefault())
+                .withDayOfMonth(1);
+        LocalDate endDate = startDate.plusMonths(1).minusDays(1);
+
         return new JpaPagingItemReaderBuilder<UserEntity>()
                 .name("userWithHabitsReader")
                 .entityManagerFactory(entityManagerFactory)
                 .queryString(
-                        "SELECT DISTINCT u FROM UserEntity u LEFT JOIN FETCH u.habits h LEFT JOIN FETCH h.formationStage LEFT JOIN FETCH h.trackings")
+                        "SELECT DISTINCT u FROM UserEntity u " +
+                                "LEFT JOIN FETCH u.habits h " +
+                                "LEFT JOIN FETCH h.formationStage " +
+                                "LEFT JOIN h.trackings t " +
+                                "WHERE t.completedDate BETWEEN :startDate AND :endDate " +
+                                "OR t.completedDate IS NULL")
+                .parameterValues(Map.of("startDate", startDate, "endDate", endDate))
                 .pageSize(10)
                 .build();
     }
