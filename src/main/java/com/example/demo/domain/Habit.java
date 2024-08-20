@@ -1,0 +1,21 @@
+package com.example.demo.domain;
+
+import java.util.List;
+import lombok.Getter;
+
+@Getter
+public class Habit {
+
+    private Long id;
+    private String name;
+    private String description;
+    private User user;
+    private HabitFormationStage formationStage;
+    private List<HabitTracking> trackings;
+
+    public Habit(Long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+}
