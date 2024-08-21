@@ -26,10 +26,6 @@ public class ReportService {
         this.llmClient = llmClient;
     }
 
-    public String generateReport(ReportData reportData) {
-        return llmClient.generateReport(reportData);
-    }
-
     public ReportData createReportData(User user, Long reportTime) {
         YearMonth reportMonth = extractReportTime(reportTime);
         List<HabitReportData> habitReportDataList = createHabitReportDatas(user, reportMonth);
@@ -59,5 +55,9 @@ public class ReportService {
                 formationStage.getAnswers(),
                 formationStage.getFeedback()
         );
+    }
+
+    public String generateReport(ReportData reportData) {
+        return llmClient.generateReport(reportData);
     }
 }
