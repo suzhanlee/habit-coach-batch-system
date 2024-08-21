@@ -2,10 +2,10 @@ package com.example.demo.infrastructure.repository;
 
 import com.example.demo.domain.model.User;
 import com.example.demo.domain.repository.UserRepository;
-import com.example.demo.entity.QHabitEntity;
-import com.example.demo.entity.QHabitFormationStageEntity;
-import com.example.demo.entity.QHabitTrackingEntity;
-import com.example.demo.entity.QUserEntity;
+import com.example.demo.infrastructure.entity.QHabitEntity;
+import com.example.demo.infrastructure.entity.QHabitFormationStageEntity;
+import com.example.demo.infrastructure.entity.QHabitTrackingEntity;
+import com.example.demo.infrastructure.entity.QUserEntity;
 import com.example.demo.infrastructure.entity.UserEntity;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDate;

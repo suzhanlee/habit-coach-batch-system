@@ -48,6 +48,9 @@ dependencies {
 
     // schedular
     implementation 'org.springframework.boot:spring-boot-starter-quartz'
+
+    // mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 tasks.named('test') {
