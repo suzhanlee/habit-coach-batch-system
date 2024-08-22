@@ -5,6 +5,7 @@ import com.example.demo.domain.model.HabitFormationStage;
 import com.example.demo.domain.model.LLMClient;
 import com.example.demo.domain.model.User;
 import com.example.demo.domain.repository.HabitRepository;
+import com.example.demo.domain.service.ReportService;
 import com.example.demo.dto.ReportData;
 import com.example.demo.dto.ReportData.HabitReportData;
 import java.time.Instant;
@@ -16,16 +17,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class ReportService {
+public class HabitReportService implements ReportService {
 
     private final HabitRepository habitRepository;
     private final LLMClient llmClient;
 
-    public ReportService(HabitRepository habitRepository, LLMClient llmClient) {
+    public HabitReportService(HabitRepository habitRepository, LLMClient llmClient) {
         this.habitRepository = habitRepository;
         this.llmClient = llmClient;
     }
 
+    @Override
     public ReportData createReportData(User user, Long reportTime) {
         YearMonth reportMonth = extractReportTime(reportTime);
         List<HabitReportData> habitReportDataList = createHabitReportDatas(user, reportMonth);
@@ -57,6 +59,7 @@ public class ReportService {
         );
     }
 
+    @Override
     public String generateReport(ReportData reportData) {
         return llmClient.generateReport(reportData);
     }

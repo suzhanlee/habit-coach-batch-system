@@ -1,6 +1,6 @@
 package com.example.demo.domain.service;
 
-import com.example.demo.application.service.ReportService;
+import com.example.demo.application.service.HabitReportService;
 import com.example.demo.dto.ReportData;
 import com.example.demo.infrastructure.entity.UserEntity;
 import lombok.extern.slf4j.Slf4j;

@@ -22,7 +22,7 @@ class ReportServiceTest {
     @DisplayName("user 정보를 바탕으로 reportData를 생성한다.")
     void create_habit_report_datas() {
         // given
-        ReportService reportService = new ReportService(new FakeHabitRepository(), new FakeGptClient());
+        HabitReportService reportService = new HabitReportService(new FakeHabitRepository(), new FakeGptClient());
         User givenUser = createGivenUser();
 
         // when
@@ -53,7 +53,7 @@ class ReportServiceTest {
     @DisplayName("월간 습관 평가 리포트를 생성한다.")
     void generate_report() {
         // given
-        ReportService reportService = new ReportService(new FakeHabitRepository(), new FakeGptClient());
+        HabitReportService reportService = new HabitReportService(new FakeHabitRepository(), new FakeGptClient());
         ReportData givenReportData = new ReportData();
 
         // when

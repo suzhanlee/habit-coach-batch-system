@@ -18,7 +18,7 @@ class EmailServiceTest {
     void send_email() {
         // given
         FakeMailSender fakeMailSender = new FakeMailSender();
-        EmailService emailService = new EmailService(fakeMailSender);
+        HabitReportEmailService emailService = new HabitReportEmailService(fakeMailSender);
         String givenEmailAddress = "wlscww@kakao.com";
         String givenSubject = "월간 보고서";
         String givenReport = "monthly habit report";
@@ -37,7 +37,7 @@ class EmailServiceTest {
     @DisplayName("이메일 전송에 실패한다.")
     void send_email_with_exception() {
         // given
-        EmailService emailService = new EmailService(new FakeMailSender(true));
+        HabitReportEmailService emailService = new HabitReportEmailService(new FakeMailSender(true));
         String givenEmailAddress = "failEmail@kakao.com";
         String givenSubject = "월간 보고서";
         String givenReport = "monthly habit report";

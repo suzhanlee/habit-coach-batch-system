@@ -1,5 +1,6 @@
 package com.example.demo.application.service;
 
+import com.example.demo.domain.service.EmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -8,14 +9,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class EmailService {
+public class HabitReportEmailService implements EmailService {
 
     private final JavaMailSender mailSender;
 
-    public EmailService(JavaMailSender mailSender) {
+    public HabitReportEmailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
+    @Override
     public void sendEmail(String emailAddress, String subject, String report) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();

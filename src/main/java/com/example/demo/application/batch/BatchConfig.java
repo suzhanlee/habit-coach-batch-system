@@ -1,8 +1,10 @@
 package com.example.demo.application.batch;
 
-import com.example.demo.application.service.EmailService;
+import com.example.demo.application.service.HabitReportEmailService;
+import com.example.demo.domain.service.EmailService;
 import com.example.demo.domain.service.ReportProcessor;
-import com.example.demo.application.service.ReportService;
+import com.example.demo.application.service.HabitReportService;
+import com.example.demo.domain.service.ReportService;
 import com.example.demo.domain.service.ReportWriter;
 import com.example.demo.domain.service.UserWithHabitsReader;
 import com.example.demo.dto.ReportData;
