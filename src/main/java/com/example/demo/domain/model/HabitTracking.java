@@ -13,4 +13,9 @@ public class HabitTracking {
         this.habit = habit;
         this.completedDate = completedDate;
     }
+
+    public HabitTracking(Long id, LocalDate completedDate) {
+        this.id = id;
+        this.completedDate = completedDate;
+    }
 }

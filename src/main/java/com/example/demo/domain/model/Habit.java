@@ -18,4 +18,13 @@ public class Habit {
         this.name = name;
         this.description = description;
     }
+
+    public Habit(Long id, String name, String description, HabitFormationStage formationStage,
+                 List<HabitTracking> trackings) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.formationStage = formationStage;
+        this.trackings = trackings;
+    }
 }

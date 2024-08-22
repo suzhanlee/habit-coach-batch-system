@@ -16,4 +16,11 @@ public class User {
         this.name = name;
         this.email = email;
     }
+
+    public User(Long id, String name, String email, List<Habit> habits) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.habits = habits;
+    }
 }
