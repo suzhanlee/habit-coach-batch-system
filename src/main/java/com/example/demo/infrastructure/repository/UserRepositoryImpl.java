@@ -25,8 +25,8 @@ public class UserRepositoryImpl implements UserRepository, UserRepositoryCustom 
     }
 
     @Override
-    public Optional<UserEntity> findUserWithHabitsAndTrackingsForMonth(Long userId, LocalDate startDate,
-                                                                       LocalDate endDate) {
+    public Optional<UserEntity> findByIdAndHabitsTrackingsCompletedDateBetween(Long userId, LocalDate startDate,
+                                                                               LocalDate endDate) {
         QUserEntity userEntity = QUserEntity.userEntity;
         QHabitEntity habitEntity = QHabitEntity.habitEntity;
         QHabitFormationStageEntity habitFormationStageEntity = QHabitFormationStageEntity.habitFormationStageEntity;

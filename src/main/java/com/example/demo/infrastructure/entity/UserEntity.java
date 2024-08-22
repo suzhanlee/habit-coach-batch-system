@@ -29,6 +29,11 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HabitEntity> habits = new ArrayList<>();
 
+    public UserEntity(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+
     public static UserEntity fromUser(User user) {
         UserEntity userEntity = new UserEntity();
         userEntity.id = user.getId();
@@ -39,5 +44,9 @@ public class UserEntity {
 
     public User toUser() {
         return new User(id, name, email);
+    }
+
+    public void addHabitEntity(HabitEntity habitEntity) {
+        this.habits.add(habitEntity);
     }
 }

@@ -36,4 +36,16 @@ public class HabitFormationStageEntity {
     private List<String> answers;
 
     private String feedback;
+
+    public HabitFormationStageEntity(int stage, List<String> questions, List<String> answers, String feedback) {
+        this.stage = stage;
+        this.questions = questions;
+        this.answers = answers;
+        this.feedback = feedback;
+    }
+
+    public void addHabitEntity(HabitEntity habitEntity) {
+        this.habit = habitEntity;
+        habitEntity.addHabitFormationStageEntity(this);
+    }
 }

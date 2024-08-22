@@ -11,5 +11,5 @@ public interface HabitTrackingJpaRepository extends JpaRepository<HabitTrackingE
                                                                       LocalDate startDate,
                                                                       LocalDate endDate);
 
-    long countHabitTrackingInDateRange(Long habitId, LocalDate startDate, LocalDate endDate);
+    long countByHabitIdAndCompletedDateBetween(Long habitId, LocalDate startDate, LocalDate endDate);
 }

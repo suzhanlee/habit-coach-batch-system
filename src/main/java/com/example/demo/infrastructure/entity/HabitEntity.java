@@ -16,13 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "habits")
 @NoArgsConstructor
 @Getter
-@Setter
 public class HabitEntity {
 
     @Id
@@ -42,7 +40,25 @@ public class HabitEntity {
     @OneToMany(mappedBy = "habit", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HabitTrackingEntity> trackings = new ArrayList<>();
 
+    public HabitEntity(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public Habit toHabit() {
         return new Habit(id, name, description);
+    }
+
+    public void addUserEntity(UserEntity userEntity) {
+        this.user = userEntity;
+        userEntity.addHabitEntity(this);
+    }
+
+    public void addHabitFormationStageEntity(HabitFormationStageEntity habitFormationStageEntity) {
+        this.formationStage = habitFormationStageEntity;
+    }
+
+    public void addHabitTrackingEntity(HabitTrackingEntity habitTrackingEntity) {
+        this.trackings.add(habitTrackingEntity);
     }
 }

@@ -30,7 +30,17 @@ public class HabitTrackingEntity {
 
     private LocalDate completedDate;
 
+    public HabitTrackingEntity(HabitEntity habit, LocalDate completedDate) {
+        this.habit = habit;
+        this.completedDate = completedDate;
+    }
+
     public HabitTracking toHabitTracking(Habit habit) {
         return new HabitTracking(id, habit, completedDate);
+    }
+
+    public void addHabitEntity(HabitEntity habitEntity) {
+        this.habit = habitEntity;
+        habitEntity.addHabitTrackingEntity(this);
     }
 }

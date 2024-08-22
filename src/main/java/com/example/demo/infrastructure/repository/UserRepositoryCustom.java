@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface UserRepositoryCustom {
 
-    Optional<UserEntity> findUserWithHabitsAndTrackingsForMonth(Long userId, LocalDate startDate, LocalDate endDate);
+    Optional<UserEntity> findByIdAndHabitsTrackingsCompletedDateBetween(Long userId, LocalDate startDate, LocalDate endDate);
 }

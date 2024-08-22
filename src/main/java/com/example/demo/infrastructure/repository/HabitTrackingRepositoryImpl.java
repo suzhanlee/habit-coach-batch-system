@@ -27,6 +27,6 @@ public class HabitTrackingRepositoryImpl implements HabitTrackingRepository {
 
     @Override
     public long countHabitTrackingInDateRange(Long habitId, LocalDate startDate, LocalDate endDate) {
-        return habitTrackingJpaRepository.countHabitTrackingInDateRange(habitId, startDate, endDate);
+        return habitTrackingJpaRepository.countByHabitIdAndCompletedDateBetween(habitId, startDate, endDate);
     }
 }
