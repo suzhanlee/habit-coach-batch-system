@@ -16,6 +16,11 @@ public class ReportData {
     private String email;
     private List<HabitReportData> habitReportDatas;
 
+    public ReportData(String userName, String email) {
+        this.userName = userName;
+        this.email = email;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

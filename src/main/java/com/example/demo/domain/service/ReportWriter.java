@@ -25,7 +25,7 @@ public class ReportWriter implements ItemWriter<ReportData> {
     }
 
     @Override
-    public void write(Chunk<? extends ReportData> chunk) throws Exception {
+    public void write(Chunk<? extends ReportData> chunk) {
         List<CompletableFuture<Void>> futures = new ArrayList<>();
         for (ReportData reportData : chunk.getItems()) {
             futures.add(CompletableFuture.runAsync(() -> {
