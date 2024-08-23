@@ -25,4 +25,8 @@ public enum Badge {
                 .findFirst()
                 .orElse(UN_RANK);
     }
+
+    public boolean isHigherTier(Badge otherBadge) {
+        return this.ordinal() < otherBadge.ordinal();
+    }
 }
