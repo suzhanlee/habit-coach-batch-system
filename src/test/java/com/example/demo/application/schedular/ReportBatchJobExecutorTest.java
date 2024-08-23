@@ -21,18 +21,18 @@ import org.springframework.batch.core.JobExecutionException;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.launch.JobLauncher;
 
-class BatchJobExecutorTest {
+class ReportBatchJobExecutorTest {
 
     private FakeJobLauncher jobLauncher;
     private FakeJob batchJob;
-    private BatchJobExecutor batchJobExecutor;
+    private ReportBatchJobExecutor reportBatchJobExecutor;
     private FakeJobExecutionContext jobExecutionContext;
 
     @BeforeEach
     void setUp() {
         jobLauncher = new FakeJobLauncher();
         batchJob = new FakeJob();
-        batchJobExecutor = new BatchJobExecutor(jobLauncher, batchJob);
+        reportBatchJobExecutor = new ReportBatchJobExecutor(jobLauncher, batchJob);
         jobExecutionContext = new FakeJobExecutionContext();
     }
 
@@ -42,7 +42,7 @@ class BatchJobExecutorTest {
         long beforeExecutionTime = System.currentTimeMillis();
 
         // when
-        batchJobExecutor.execute(jobExecutionContext);
+        reportBatchJobExecutor.execute(jobExecutionContext);
 
         // then
         long afterExecutionTime = System.currentTimeMillis();
@@ -64,7 +64,7 @@ class BatchJobExecutorTest {
         jobLauncher.shouldThrowException = true;
 
         // when & then
-        assertDoesNotThrow(() -> batchJobExecutor.execute(jobExecutionContext));
+        assertDoesNotThrow(() -> reportBatchJobExecutor.execute(jobExecutionContext));
     }
 
     private static class FakeJobLauncher implements JobLauncher {

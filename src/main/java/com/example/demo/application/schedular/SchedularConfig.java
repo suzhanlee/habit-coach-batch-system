@@ -19,7 +19,7 @@ public class SchedularConfig {
 
     @Bean
     public JobDetail batchJobDetail() {
-        return newJob(BatchJobExecutor.class)
+        return newJob(ReportBatchJobExecutor.class)
                 .withIdentity("batchJob", "batchGroup")
                 .storeDurably()
                 .build();

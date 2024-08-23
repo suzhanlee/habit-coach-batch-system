@@ -37,8 +37,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.task.AsyncTaskExecutor;
 
 @SpringBatchTest
-@SpringBootTest(classes = BatchConfig.class)
-class BatchConfigTest {
+@SpringBootTest(classes = ReportBatchConfig.class)
+class ReportBatchConfigTest {
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;

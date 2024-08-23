@@ -7,13 +7,13 @@ import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.stereotype.Component;
 
-@Component
-public class BatchJobExecutor implements Job {
+@Component(value = "reportBatchJobExecutor")
+public class ReportBatchJobExecutor implements Job {
 
     private final JobLauncher jobLauncher;
     private final org.springframework.batch.core.Job batchJob;
 
-    public BatchJobExecutor(JobLauncher jobLauncher, org.springframework.batch.core.Job batchJob) {
+    public ReportBatchJobExecutor(JobLauncher jobLauncher, org.springframework.batch.core.Job batchJob) {
         this.jobLauncher = jobLauncher;
         this.batchJob = batchJob;
     }

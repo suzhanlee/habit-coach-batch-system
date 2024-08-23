@@ -33,7 +33,7 @@ class SchedularConfigTest {
         assertEquals("batchJob", jobDetail.getKey().getName());
         assertEquals("batchGroup", jobDetail.getKey().getGroup());
         assertTrue(jobDetail.isDurable());
-        assertEquals(BatchJobExecutor.class, jobDetail.getJobClass());
+        assertEquals(ReportBatchJobExecutor.class, jobDetail.getJobClass());
     }
 
     @Test

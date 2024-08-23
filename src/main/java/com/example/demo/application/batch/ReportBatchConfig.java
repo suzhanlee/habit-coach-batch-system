@@ -26,31 +26,31 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 @EnableBatchProcessing
 @Slf4j
-public class BatchConfig {
+public class ReportBatchConfig {
 
     private final EntityManagerFactory entityManagerFactory;
     private final ReportService reportService;
     private final EmailService emailService;
     private final AsyncTaskExecutor taskExecutor;
 
-    public BatchConfig(EntityManagerFactory entityManagerFactory,
-                       ReportService reportService,
-                       EmailService emailService,
-                       @Qualifier("applicationTaskExecutor") AsyncTaskExecutor taskExecutor) {
+    public ReportBatchConfig(EntityManagerFactory entityManagerFactory,
+                             ReportService reportService,
+                             EmailService emailService,
+                             @Qualifier("applicationTaskExecutor") AsyncTaskExecutor taskExecutor) {
         this.entityManagerFactory = entityManagerFactory;
         this.reportService = reportService;
         this.emailService = emailService;
         this.taskExecutor = taskExecutor;
     }
 
-    @Bean
+    @Bean(name = "reportJob")
     public Job batchJob(JobRepository jobRepository, Step step) {
         return new JobBuilder("reportJob", jobRepository)
                 .start(step)
                 .build();
     }
 
-    @Bean
+    @Bean(name = "reportStep")
     public Step step(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
         return new StepBuilder("reportStep", jobRepository)
                 .<UserEntity, ReportData>chunk(10, transactionManager)
@@ -60,19 +60,19 @@ public class BatchConfig {
                 .build();
     }
 
-    @Bean
+    @Bean("reportReader")
     @StepScope
     public UserWithHabitsReader userWithHabitsReader(@Value("#{jobParameters['time']}") Long reportTime) {
         return new UserWithHabitsReader(entityManagerFactory, reportTime);
     }
 
-    @Bean
+    @Bean("reportProcessor")
     @StepScope
     public ReportProcessor reportProcessor(@Value("#{jobParameters['time']}") Long reportTime) {
         return new ReportProcessor(reportService, reportTime);
     }
 
-    @Bean
+    @Bean("reportWriter")
     public ReportWriter reportWriter() {
         return new ReportWriter(reportService, emailService, taskExecutor);
     }
