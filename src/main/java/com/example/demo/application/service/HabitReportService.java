@@ -51,7 +51,7 @@ public class HabitReportService implements ReportService {
                 habit.getName(),
                 currentMonth.getMonthValue(),
                 currentMonth.getYear(),
-                habit.getTrackings().size(),
+                habit.getTrackings().habitTrackings().size(),
                 formationStage.getStage(),
                 formationStage.getQuestions(),
                 formationStage.getAnswers(),

@@ -18,4 +18,12 @@ public class HabitTracking {
         this.id = id;
         this.completedDate = completedDate;
     }
+
+    public int compareCompletedDate(HabitTracking habitTracking) {
+        return this.completedDate.compareTo(habitTracking.completedDate);
+    }
+
+    public boolean isContinuousDate(HabitTracking habitTracking) {
+        return this.completedDate.minusDays(1).equals(habitTracking.completedDate);
+    }
 }
