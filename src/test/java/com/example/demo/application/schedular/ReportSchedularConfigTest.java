@@ -16,22 +16,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.test.context.TestPropertySource;
 
-@SpringBootTest(classes = SchedularConfig.class)
+@SpringBootTest(classes = ReportSchedularConfig.class)
 @TestPropertySource(properties = {"batch.cron.expression=0 0 12 * * ?"})
-class SchedularConfigTest {
+class ReportSchedularConfigTest {
 
     @Autowired
-    private SchedularConfig schedularConfig;
+    private ReportSchedularConfig reportSchedularConfig;
 
     @Test
     void testBatchJobDetail() {
         // given && when
-        JobDetail jobDetail = schedularConfig.batchJobDetail();
+        JobDetail jobDetail = reportSchedularConfig.batchJobDetail();
 
         // then
         assertNotNull(jobDetail);
-        assertEquals("batchJob", jobDetail.getKey().getName());
-        assertEquals("batchGroup", jobDetail.getKey().getGroup());
+        assertEquals("reportBatchJob", jobDetail.getKey().getName());
+        assertEquals("reportBatchGroup", jobDetail.getKey().getGroup());
         assertTrue(jobDetail.isDurable());
         assertEquals(ReportBatchJobExecutor.class, jobDetail.getJobClass());
     }
@@ -39,13 +39,13 @@ class SchedularConfigTest {
     @Test
     void testBatchJobTrigger() {
         // given && when
-        JobDetail jobDetail = schedularConfig.batchJobDetail();
-        Trigger trigger = schedularConfig.batchJobTrigger(jobDetail);
+        JobDetail jobDetail = reportSchedularConfig.batchJobDetail();
+        Trigger trigger = reportSchedularConfig.batchJobTrigger(jobDetail);
 
         // then
         assertNotNull(trigger);
-        assertEquals("batchTrigger", trigger.getKey().getName());
-        assertEquals("batchGroup", trigger.getKey().getGroup());
+        assertEquals("reportBatchTrigger", trigger.getKey().getName());
+        assertEquals("reportBatchGroup", trigger.getKey().getGroup());
 
         assertInstanceOf(CronTrigger.class, trigger);
         CronTrigger cronTrigger = (CronTrigger) trigger;
@@ -55,11 +55,11 @@ class SchedularConfigTest {
     @Test
     void testScheduler() throws SchedulerException {
         // given
-        JobDetail jobDetail = schedularConfig.batchJobDetail();
-        Trigger trigger = schedularConfig.batchJobTrigger(jobDetail);
+        JobDetail jobDetail = reportSchedularConfig.batchJobDetail();
+        Trigger trigger = reportSchedularConfig.batchJobTrigger(jobDetail);
 
         // when
-        SchedulerFactoryBean schedulerFactoryBean = schedularConfig.scheduler(trigger, jobDetail);
+        SchedulerFactoryBean schedulerFactoryBean = reportSchedularConfig.scheduler(trigger, jobDetail);
         Scheduler scheduler = schedulerFactoryBean.getScheduler();
 
         // then

@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 @Configuration
-public class SchedularConfig {
+public class ReportSchedularConfig {
 
     @Value("${batch.cron.expression}")
     private String cronExpression;
@@ -20,16 +20,16 @@ public class SchedularConfig {
     @Bean
     public JobDetail batchJobDetail() {
         return newJob(ReportBatchJobExecutor.class)
-                .withIdentity("batchJob", "batchGroup")
+                .withIdentity("reportBatchJob", "reportBatchGroup")
                 .storeDurably()
                 .build();
     }
 
     @Bean
-    public Trigger batchJobTrigger(JobDetail batchJobDetail) {
+    public Trigger batchJobTrigger(JobDetail reportBatchJobDetail) {
         return newTrigger()
-                .forJob(batchJobDetail)
-                .withIdentity("batchTrigger", "batchGroup")
+                .forJob(reportBatchJobDetail)
+                .withIdentity("reportBatchTrigger", "reportBatchGroup")
                 .withSchedule(cronSchedule(cronExpression))
                 .build();
     }
