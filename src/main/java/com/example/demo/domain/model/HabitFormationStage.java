@@ -20,4 +20,9 @@ public class HabitFormationStage {
         this.answers = answers;
         this.feedback = feedback;
     }
+
+    public HabitFormationStage(Long id, int stage) {
+        this.id = id;
+        this.stage = stage;
+    }
 }

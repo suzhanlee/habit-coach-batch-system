@@ -1,9 +1,7 @@
 package com.example.demo.domain.model;
 
 import java.util.List;
-import lombok.Getter;
 
-@Getter
 public record HabitTrackings(List<HabitTracking> habitTrackings) {
 
     public int countMaxStreak() {
