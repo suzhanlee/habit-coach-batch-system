@@ -38,8 +38,21 @@ public class Habit {
         this.trackings = trackings;
     }
 
+    public Habit(Long id, String name, String description, HabitFormationStage formationStage,
+                 List<HabitTracking> trackings, Badge badge) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.formationStage = formationStage;
+        this.trackings = new HabitTrackings(trackings);
+        this.badge = badge;
+    }
+
     public void updateBadgeLevel() {
         int currenMaxStreak = this.trackings.countMaxStreak();
-        this.badge = Badge.findBadgeByStreak(currenMaxStreak);
+        Badge newBadge = Badge.findBadgeByStreak(currenMaxStreak);
+        if (newBadge.isHigherTier(this.badge)) {
+            this.badge = newBadge;
+        }
     }
 }
