@@ -65,8 +65,8 @@ class ReportWriterTest {
     }
 
     private static class FakeEmailService implements EmailService {
-        private int sentEmailCount = 0;
         private final List<EmailRecord> sentEmails = new ArrayList<>();
+        private int sentEmailCount = 0;
 
         @Override
         public void sendEmail(String emailAddress, String subject, String report) {

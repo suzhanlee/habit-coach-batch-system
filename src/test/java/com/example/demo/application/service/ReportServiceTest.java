@@ -32,7 +32,8 @@ class ReportServiceTest {
         assertThat(result).isEqualTo(
                 new ReportData(1L, "suchan", "wlscww123@kakao.com",
                         List.of(new HabitReportData("exercise", LocalDate.now().getMonthValue(),
-                                LocalDate.now().getYear(), 20, 2, List.of("question"), List.of("answer"), "feedback"))));
+                                LocalDate.now().getYear(), 20, 2, List.of("question"), List.of("answer"),
+                                "feedback"))));
     }
 
     private User createGivenUser() {

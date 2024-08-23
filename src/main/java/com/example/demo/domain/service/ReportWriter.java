@@ -1,7 +1,5 @@
 package com.example.demo.domain.service;
 
-import com.example.demo.application.service.HabitReportEmailService;
-import com.example.demo.application.service.HabitReportService;
 import com.example.demo.dto.ReportData;
 import java.util.ArrayList;
 import java.util.List;
