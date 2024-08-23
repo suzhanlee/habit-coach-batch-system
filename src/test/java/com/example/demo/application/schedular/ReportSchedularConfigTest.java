@@ -17,16 +17,16 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(classes = ReportSchedularConfig.class)
-@TestPropertySource(properties = {"batch.cron.expression=0 0 12 * * ?"})
+@TestPropertySource(properties = {"batch.report.cron.expression=0 0 12 * * ?"})
 class ReportSchedularConfigTest {
 
     @Autowired
     private ReportSchedularConfig reportSchedularConfig;
 
     @Test
-    void testBatchJobDetail() {
+    void testReportBatchJobDetail() {
         // given && when
-        JobDetail jobDetail = reportSchedularConfig.batchJobDetail();
+        JobDetail jobDetail = reportSchedularConfig.reportBatchJobDetail();
 
         // then
         assertNotNull(jobDetail);
@@ -39,8 +39,8 @@ class ReportSchedularConfigTest {
     @Test
     void testBatchJobTrigger() {
         // given && when
-        JobDetail jobDetail = reportSchedularConfig.batchJobDetail();
-        Trigger trigger = reportSchedularConfig.batchJobTrigger(jobDetail);
+        JobDetail jobDetail = reportSchedularConfig.reportBatchJobDetail();
+        Trigger trigger = reportSchedularConfig.reportBatchJobTrigger(jobDetail);
 
         // then
         assertNotNull(trigger);
@@ -55,11 +55,11 @@ class ReportSchedularConfigTest {
     @Test
     void testScheduler() throws SchedulerException {
         // given
-        JobDetail jobDetail = reportSchedularConfig.batchJobDetail();
-        Trigger trigger = reportSchedularConfig.batchJobTrigger(jobDetail);
+        JobDetail jobDetail = reportSchedularConfig.reportBatchJobDetail();
+        Trigger trigger = reportSchedularConfig.reportBatchJobTrigger(jobDetail);
 
         // when
-        SchedulerFactoryBean schedulerFactoryBean = reportSchedularConfig.scheduler(trigger, jobDetail);
+        SchedulerFactoryBean schedulerFactoryBean = reportSchedularConfig.reportScheduler(trigger, jobDetail);
         Scheduler scheduler = schedulerFactoryBean.getScheduler();
 
         // then

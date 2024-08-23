@@ -10,9 +10,6 @@ import static org.mockito.Mockito.when;
 
 import com.example.demo.application.service.HabitReportService;
 import com.example.demo.domain.service.EmailService;
-import com.example.demo.domain.service.ReportProcessor;
-import com.example.demo.domain.service.ReportWriter;
-import com.example.demo.domain.service.UserWithHabitsReader;
 import com.example.demo.dto.ReportData;
 import com.example.demo.infrastructure.entity.HabitEntity;
 import com.example.demo.infrastructure.entity.UserEntity;
@@ -28,6 +25,9 @@ import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +53,13 @@ class ReportBatchConfigTest {
     private EntityManagerFactory entityManagerFactory;
 
     @Autowired
-    private UserWithHabitsReader userWithHabitsReader;
+    private ItemReader userWithHabitsReader;
 
     @Autowired
-    private ReportProcessor reportProcessor;
+    private ItemProcessor reportProcessor;
 
     @Autowired
-    private ReportWriter reportWriter;
+    private ItemWriter reportWriter;
 
     @MockBean
     @Qualifier("applicationTaskExecutor")
@@ -93,7 +93,7 @@ class ReportBatchConfigTest {
     }
 
     @Test
-    void testBatchJob() throws Exception {
+    void testReportBatchJob() throws Exception {
         // given
         LocalDate givenDate = LocalDate.of(2024, 8, 22);
         long reportTime = givenDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();

@@ -14,11 +14,11 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 @Configuration
 public class ReportSchedularConfig {
 
-    @Value("${batch.cron.expression}")
+    @Value("${batch.report.cron.expression}")
     private String cronExpression;
 
     @Bean
-    public JobDetail batchJobDetail() {
+    public JobDetail reportBatchJobDetail() {
         return newJob(ReportBatchJobExecutor.class)
                 .withIdentity("reportBatchJob", "reportBatchGroup")
                 .storeDurably()
@@ -26,7 +26,7 @@ public class ReportSchedularConfig {
     }
 
     @Bean
-    public Trigger batchJobTrigger(JobDetail reportBatchJobDetail) {
+    public Trigger reportBatchJobTrigger(JobDetail reportBatchJobDetail) {
         return newTrigger()
                 .forJob(reportBatchJobDetail)
                 .withIdentity("reportBatchTrigger", "reportBatchGroup")
@@ -35,10 +35,10 @@ public class ReportSchedularConfig {
     }
 
     @Bean
-    public SchedulerFactoryBean scheduler(Trigger trigger, JobDetail job) {
+    public SchedulerFactoryBean reportScheduler(Trigger reportBatchJobTrigger, JobDetail reportBatchJobDetail) {
         SchedulerFactoryBean schedulerFactory = new SchedulerFactoryBean();
-        schedulerFactory.setJobDetails(job);
-        schedulerFactory.setTriggers(trigger);
+        schedulerFactory.setJobDetails(reportBatchJobDetail);
+        schedulerFactory.setTriggers(reportBatchJobTrigger);
         return schedulerFactory;
     }
 }

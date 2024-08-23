@@ -16,6 +16,9 @@ import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -43,15 +46,15 @@ public class ReportBatchConfig {
         this.taskExecutor = taskExecutor;
     }
 
-    @Bean(name = "reportJob")
-    public Job batchJob(JobRepository jobRepository, Step step) {
-        return new JobBuilder("reportJob", jobRepository)
-                .start(step)
+    @Bean
+    public Job reportBatchJob(JobRepository jobRepository, Step reportStep) {
+        return new JobBuilder("reportBatchJob", jobRepository)
+                .start(reportStep)
                 .build();
     }
 
-    @Bean(name = "reportStep")
-    public Step step(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+    @Bean
+    public Step reportStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
         return new StepBuilder("reportStep", jobRepository)
                 .<UserEntity, ReportData>chunk(10, transactionManager)
                 .reader(userWithHabitsReader(null))
@@ -60,20 +63,20 @@ public class ReportBatchConfig {
                 .build();
     }
 
-    @Bean("reportReader")
+    @Bean
     @StepScope
-    public UserWithHabitsReader userWithHabitsReader(@Value("#{jobParameters['time']}") Long reportTime) {
+    public ItemReader<UserEntity> userWithHabitsReader(@Value("#{jobParameters['time']}") Long reportTime) {
         return new UserWithHabitsReader(entityManagerFactory, reportTime);
     }
 
-    @Bean("reportProcessor")
+    @Bean
     @StepScope
-    public ReportProcessor reportProcessor(@Value("#{jobParameters['time']}") Long reportTime) {
+    public ItemProcessor<UserEntity, ReportData> reportProcessor(@Value("#{jobParameters['time']}") Long reportTime) {
         return new ReportProcessor(reportService, reportTime);
     }
 
-    @Bean("reportWriter")
-    public ReportWriter reportWriter() {
+    @Bean
+    public ItemWriter<ReportData> reportWriter() {
         return new ReportWriter(reportService, emailService, taskExecutor);
     }
 }
