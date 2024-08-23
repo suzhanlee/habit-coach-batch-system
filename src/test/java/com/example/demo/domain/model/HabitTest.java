@@ -3,8 +3,8 @@ package com.example.demo.domain.model;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -26,10 +26,8 @@ class HabitTest {
     }
 
     private List<HabitTracking> createGivenTrackings() {
-        List<HabitTracking> habitTrackings = new ArrayList<>();
-        for (int i = 1; i <= 100; i++) {
-            habitTrackings.add(new HabitTracking((long) i, LocalDate.of(2024, 8, 23).plusDays(i)));
-        }
-        return habitTrackings;
+        return IntStream.rangeClosed(1, 100)
+                .mapToObj(i -> new HabitTracking((long) i, LocalDate.of(2024, 8, 23).plusDays(i)))
+                .toList();
     }
 }
