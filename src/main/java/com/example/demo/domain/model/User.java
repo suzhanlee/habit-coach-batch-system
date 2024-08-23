@@ -23,4 +23,10 @@ public class User {
         this.email = email;
         this.habits = habits;
     }
+
+    public void refreshHabitTiers() {
+        for (Habit habit : habits) {
+            habit.updateBadgeLevel();
+        }
+    }
 }
