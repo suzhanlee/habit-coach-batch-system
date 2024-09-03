@@ -1,5 +1,6 @@
 package com.example.demo.infrastructure.entity;
 
+import com.example.demo.domain.model.Habit;
 import com.example.demo.domain.model.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -34,19 +35,29 @@ public class UserEntity {
         this.email = email;
     }
 
+    public User toUser() {
+        List<Habit> habitList = this.habits.stream()
+                .map(HabitEntity::toHabit)
+                .toList();
+        return new User(id, name, email, habitList);
+    }
+
     public static UserEntity fromUser(User user) {
         UserEntity userEntity = new UserEntity();
         userEntity.id = user.getId();
         userEntity.name = user.getName();
         userEntity.email = user.getEmail();
-        return userEntity;
-    }
 
-    public User toUser() {
-        return new User(id, name, email);
+        for (Habit habit : user.getHabits()) {
+            HabitEntity habitEntity = HabitEntity.fromHabit(habit);
+            userEntity.addHabitEntity(habitEntity);
+        }
+
+        return userEntity;
     }
 
     public void addHabitEntity(HabitEntity habitEntity) {
         this.habits.add(habitEntity);
+        habitEntity.addUserEntity(this);
     }
 }
