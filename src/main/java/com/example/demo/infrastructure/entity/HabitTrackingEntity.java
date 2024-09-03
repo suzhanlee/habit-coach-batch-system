@@ -1,6 +1,5 @@
 package com.example.demo.infrastructure.entity;
 
-import com.example.demo.domain.model.Habit;
 import com.example.demo.domain.model.HabitTracking;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,12 +34,18 @@ public class HabitTrackingEntity {
         this.completedDate = completedDate;
     }
 
-    public HabitTracking toHabitTracking(Habit habit) {
-        return new HabitTracking(id, habit, completedDate);
+    public HabitTracking toHabitTracking() {
+        return new HabitTracking(id, completedDate);
+    }
+
+    public static HabitTrackingEntity fromHabitTracking(HabitTracking tracking) {
+        HabitTrackingEntity habitTrackingEntity = new HabitTrackingEntity();
+        habitTrackingEntity.id = tracking.getId();
+        habitTrackingEntity.completedDate = tracking.getCompletedDate();
+        return habitTrackingEntity;
     }
 
     public void addHabitEntity(HabitEntity habitEntity) {
         this.habit = habitEntity;
-        habitEntity.addHabitTrackingEntity(this);
     }
 }
