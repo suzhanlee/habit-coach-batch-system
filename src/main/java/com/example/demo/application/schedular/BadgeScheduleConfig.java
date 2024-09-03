@@ -6,6 +6,7 @@ import static org.quartz.TriggerBuilder.newTrigger;
 
 import org.quartz.JobDetail;
 import org.quartz.Trigger;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +27,7 @@ public class BadgeScheduleConfig {
     }
 
     @Bean
-    public Trigger badgeBatchJobTrigger(JobDetail badgeBatchJobDetail) {
+    public Trigger badgeBatchJobTrigger(@Qualifier("badgeBatchJobDetail") JobDetail badgeBatchJobDetail) {
         return newTrigger()
                 .forJob(badgeBatchJobDetail)
                 .withIdentity("badgeBatchTrigger", "badgeBatchGroup")
@@ -35,7 +36,7 @@ public class BadgeScheduleConfig {
     }
 
     @Bean
-    public SchedulerFactoryBean badgeScheduler(Trigger badgeBatchJobTrigger, JobDetail badgeBatchJobDetail) {
+    public SchedulerFactoryBean badgeScheduler(@Qualifier("badgeBatchJobTrigger") Trigger badgeBatchJobTrigger, @Qualifier("badgeBatchJobDetail") JobDetail badgeBatchJobDetail) {
         SchedulerFactoryBean schedulerFactory = new SchedulerFactoryBean();
         schedulerFactory.setJobDetails(badgeBatchJobDetail);
         schedulerFactory.setTriggers(badgeBatchJobTrigger);
