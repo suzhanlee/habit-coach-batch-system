@@ -45,10 +45,6 @@ public class HabitFormationStageEntity {
         this.feedback = feedback;
     }
 
-    public HabitFormationStage toFormationStage() {
-        return new HabitFormationStage(id, stage, questions, answers, feedback);
-    }
-
     public static HabitFormationStageEntity fromHabitFormationStage(HabitFormationStage formationStage) {
         HabitFormationStageEntity stageEntity = new HabitFormationStageEntity();
         stageEntity.id = formationStage.getId();
@@ -57,6 +53,10 @@ public class HabitFormationStageEntity {
         stageEntity.answers = formationStage.getAnswers();
         stageEntity.feedback = formationStage.getFeedback();
         return stageEntity;
+    }
+
+    public HabitFormationStage toFormationStage() {
+        return new HabitFormationStage(id, stage, questions, answers, feedback);
     }
 
     public void addHabitEntity(HabitEntity habitEntity) {

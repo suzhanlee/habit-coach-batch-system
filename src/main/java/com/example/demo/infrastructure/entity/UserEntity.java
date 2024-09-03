@@ -35,13 +35,6 @@ public class UserEntity {
         this.email = email;
     }
 
-    public User toUser() {
-        List<Habit> habitList = this.habits.stream()
-                .map(HabitEntity::toHabit)
-                .toList();
-        return new User(id, name, email, habitList);
-    }
-
     public static UserEntity fromUser(User user) {
         UserEntity userEntity = new UserEntity();
         userEntity.id = user.getId();
@@ -54,6 +47,13 @@ public class UserEntity {
         }
 
         return userEntity;
+    }
+
+    public User toUser() {
+        List<Habit> habitList = this.habits.stream()
+                .map(HabitEntity::toHabit)
+                .toList();
+        return new User(id, name, email, habitList);
     }
 
     public void addHabitEntity(HabitEntity habitEntity) {

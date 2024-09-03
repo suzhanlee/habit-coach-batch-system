@@ -1,6 +1,5 @@
 package com.example.demo.infrastructure.repository;
 
-import com.example.demo.domain.model.Habit;
 import com.example.demo.domain.model.HabitTracking;
 import com.example.demo.domain.repository.HabitTrackingRepository;
 import java.time.LocalDate;

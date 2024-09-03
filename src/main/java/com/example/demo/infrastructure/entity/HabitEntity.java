@@ -63,6 +63,25 @@ public class HabitEntity {
         this.badge = Badge.UN_RANK;
     }
 
+    public static HabitEntity fromHabit(Habit habit) {
+        HabitEntity habitEntity = new HabitEntity();
+        habitEntity.id = habit.getId();
+        habitEntity.name = habit.getName();
+        habitEntity.description = habit.getDescription();
+        habitEntity.badge = habit.getBadge();
+
+        HabitFormationStageEntity habitFormationStageEntity = HabitFormationStageEntity.fromHabitFormationStage(
+                habit.getFormationStage());
+        habitEntity.addHabitFormationStage(habitFormationStageEntity);
+
+        for (HabitTracking habitTracking : habit.getTrackings().habitTrackings()) {
+            HabitTrackingEntity habitTrackingEntity = HabitTrackingEntity.fromHabitTracking(habitTracking);
+            habitEntity.addHabitTrackingEntity(habitTrackingEntity);
+        }
+
+        return habitEntity;
+    }
+
     public Habit toHabit() {
         return new Habit(
                 id,
@@ -72,24 +91,6 @@ public class HabitEntity {
                 trackings.stream().map(HabitTrackingEntity::toHabitTracking).toList(),
                 badge
         );
-    }
-
-    public static HabitEntity fromHabit(Habit habit) {
-        HabitEntity habitEntity = new HabitEntity();
-        habitEntity.id = habit.getId();
-        habitEntity.name = habit.getName();
-        habitEntity.description = habit.getDescription();
-        habitEntity.badge = habit.getBadge();
-
-        HabitFormationStageEntity habitFormationStageEntity = HabitFormationStageEntity.fromHabitFormationStage(habit.getFormationStage());
-        habitEntity.addHabitFormationStage(habitFormationStageEntity);
-
-        for (HabitTracking habitTracking : habit.getTrackings().habitTrackings()) {
-            HabitTrackingEntity habitTrackingEntity = HabitTrackingEntity.fromHabitTracking(habitTracking);
-            habitEntity.addHabitTrackingEntity(habitTrackingEntity);
-        }
-
-        return habitEntity;
     }
 
     public void addUserEntity(UserEntity userEntity) {

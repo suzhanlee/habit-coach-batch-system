@@ -9,6 +9,22 @@ import org.junit.jupiter.api.Test;
 
 class BadgeProcessorTest {
 
+    @DisplayName("HabitEntity 로 습관의 뱃지를 최신 추적 정보를 바탕으로 업데이트한다.")
+    @Test
+    void process() throws Exception {
+        // given
+        TestHabit givenHabit = new TestHabit();
+        TestHabitEntity givenEntity = new TestHabitEntity(givenHabit);
+        BadgeProcessor processor = new BadgeProcessor();
+
+        // when
+        Habit result = processor.process(givenEntity);
+
+        // then
+        assertThat(result).isInstanceOf(givenHabit.getClass());
+        assertThat(givenHabit.updateBadgeLevelCalled).isTrue();
+    }
+
     class TestHabitEntity extends HabitEntity {
         private Habit habit;
 
@@ -29,21 +45,5 @@ class BadgeProcessorTest {
         public void updateBadgeLevel() {
             updateBadgeLevelCalled = true;
         }
-    }
-
-    @DisplayName("HabitEntity 로 습관의 뱃지를 최신 추적 정보를 바탕으로 업데이트한다.")
-    @Test
-    void process() throws Exception {
-        // given
-        TestHabit givenHabit = new TestHabit();
-        TestHabitEntity givenEntity = new TestHabitEntity(givenHabit);
-        BadgeProcessor processor = new BadgeProcessor();
-
-        // when
-        Habit result = processor.process(givenEntity);
-
-        // then
-        assertThat(result).isInstanceOf(givenHabit.getClass());
-        assertThat(givenHabit.updateBadgeLevelCalled).isTrue();
     }
 }

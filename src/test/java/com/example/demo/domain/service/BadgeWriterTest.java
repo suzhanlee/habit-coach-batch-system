@@ -46,7 +46,6 @@ class BadgeWriterTest {
         User user = new User("suchan", "wlscww@kakao.com", habits);
         userRepository.save(user);
 
-
         for (Habit habit : user.getHabits()) {
             habit.updateBadgeLevel();
         }

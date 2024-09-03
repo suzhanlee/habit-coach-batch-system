@@ -39,7 +39,8 @@ public class BadgeBatchConfig {
     }
 
     @Bean
-    public Step badgeStep(JobRepository jobRepository, PlatformTransactionManager transactionManager, HabitRepository habitRepository, EntityManagerFactory entityManagerFactory) {
+    public Step badgeStep(JobRepository jobRepository, PlatformTransactionManager transactionManager,
+                          HabitRepository habitRepository, EntityManagerFactory entityManagerFactory) {
         return new StepBuilder("badgeStep", jobRepository)
                 .chunk(10, transactionManager)
                 .reader(badgeItemReader(entityManagerFactory))

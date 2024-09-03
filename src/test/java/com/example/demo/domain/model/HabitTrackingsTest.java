@@ -14,33 +14,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 class HabitTrackingsTest {
 
-    @Test
-    @DisplayName("습관 추적이 없는 경우")
-    void count_empty_trackings() {
-        // given
-        HabitTrackings habitTrackings = new HabitTrackings(new ArrayList<>());
-
-        // when
-        int result = habitTrackings.countMaxStreak();
-
-        // then
-        assertEquals(0, result);
-    }
-
-    @ParameterizedTest
-    @MethodSource("provideTrackingsAndExpectedMaxStreak")
-    @DisplayName("습관 추적이 있는 경우 연속된 스트릭 수를 계산한다.")
-    void count_max_streak(List<HabitTracking> trackings, int expectedMaxStreak) {
-        // given
-        HabitTrackings habitTrackings = new HabitTrackings(trackings);
-
-        // when
-        int result = habitTrackings.countMaxStreak();
-
-        // then
-        assertEquals(expectedMaxStreak, result);
-    }
-
     private static Stream<Arguments> provideTrackingsAndExpectedMaxStreak() {
         return Stream.of(
                 Arguments.of(
@@ -71,5 +44,32 @@ class HabitTrackingsTest {
                         ), 3
                 )
         );
+    }
+
+    @Test
+    @DisplayName("습관 추적이 없는 경우")
+    void count_empty_trackings() {
+        // given
+        HabitTrackings habitTrackings = new HabitTrackings(new ArrayList<>());
+
+        // when
+        int result = habitTrackings.countMaxStreak();
+
+        // then
+        assertEquals(0, result);
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideTrackingsAndExpectedMaxStreak")
+    @DisplayName("습관 추적이 있는 경우 연속된 스트릭 수를 계산한다.")
+    void count_max_streak(List<HabitTracking> trackings, int expectedMaxStreak) {
+        // given
+        HabitTrackings habitTrackings = new HabitTrackings(trackings);
+
+        // when
+        int result = habitTrackings.countMaxStreak();
+
+        // then
+        assertEquals(expectedMaxStreak, result);
     }
 }

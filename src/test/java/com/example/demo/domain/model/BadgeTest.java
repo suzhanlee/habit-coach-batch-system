@@ -13,13 +13,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 class BadgeTest {
 
-    @ParameterizedTest
-    @MethodSource("provideStreakCountsAndExpectedBadges")
-    @DisplayName("모든 경우에 대해 streak 수에 해당하는 뱃지를 찾아온다.")
-    void find_badge_by_streak(int streakCount, Badge expectedBadge) {
-        assertEquals(expectedBadge, Badge.findBadgeByStreak(streakCount));
-    }
-
     private static Stream<Arguments> provideStreakCountsAndExpectedBadges() {
         return Stream.of(
                 Arguments.of(0, Badge.UN_RANK),
@@ -38,6 +31,13 @@ class BadgeTest {
                 Arguments.of(300, Badge.CHALLENGER),
                 Arguments.of(1000, Badge.CHALLENGER)
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideStreakCountsAndExpectedBadges")
+    @DisplayName("모든 경우에 대해 streak 수에 해당하는 뱃지를 찾아온다.")
+    void find_badge_by_streak(int streakCount, Badge expectedBadge) {
+        assertEquals(expectedBadge, Badge.findBadgeByStreak(streakCount));
     }
 
     @Test

@@ -34,15 +34,15 @@ public class HabitTrackingEntity {
         this.completedDate = completedDate;
     }
 
-    public HabitTracking toHabitTracking() {
-        return new HabitTracking(id, completedDate);
-    }
-
     public static HabitTrackingEntity fromHabitTracking(HabitTracking tracking) {
         HabitTrackingEntity habitTrackingEntity = new HabitTrackingEntity();
         habitTrackingEntity.id = tracking.getId();
         habitTrackingEntity.completedDate = tracking.getCompletedDate();
         return habitTrackingEntity;
+    }
+
+    public HabitTracking toHabitTracking() {
+        return new HabitTracking(id, completedDate);
     }
 
     public void addHabitEntity(HabitEntity habitEntity) {

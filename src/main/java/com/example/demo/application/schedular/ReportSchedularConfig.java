@@ -36,7 +36,8 @@ public class ReportSchedularConfig {
     }
 
     @Bean
-    public SchedulerFactoryBean reportScheduler(@Qualifier("reportBatchJobTrigger") Trigger reportBatchJobTrigger, @Qualifier("reportBatchJobDetail") JobDetail reportBatchJobDetail) {
+    public SchedulerFactoryBean reportScheduler(@Qualifier("reportBatchJobTrigger") Trigger reportBatchJobTrigger,
+                                                @Qualifier("reportBatchJobDetail") JobDetail reportBatchJobDetail) {
         SchedulerFactoryBean schedulerFactory = new SchedulerFactoryBean();
         schedulerFactory.setJobDetails(reportBatchJobDetail);
         schedulerFactory.setTriggers(reportBatchJobTrigger);

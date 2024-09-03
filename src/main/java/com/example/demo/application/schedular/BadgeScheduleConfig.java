@@ -36,7 +36,8 @@ public class BadgeScheduleConfig {
     }
 
     @Bean
-    public SchedulerFactoryBean badgeScheduler(@Qualifier("badgeBatchJobTrigger") Trigger badgeBatchJobTrigger, @Qualifier("badgeBatchJobDetail") JobDetail badgeBatchJobDetail) {
+    public SchedulerFactoryBean badgeScheduler(@Qualifier("badgeBatchJobTrigger") Trigger badgeBatchJobTrigger,
+                                               @Qualifier("badgeBatchJobDetail") JobDetail badgeBatchJobDetail) {
         SchedulerFactoryBean schedulerFactory = new SchedulerFactoryBean();
         schedulerFactory.setJobDetails(badgeBatchJobDetail);
         schedulerFactory.setTriggers(badgeBatchJobTrigger);
