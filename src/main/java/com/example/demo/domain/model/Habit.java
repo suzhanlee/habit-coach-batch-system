@@ -9,10 +9,12 @@ public class Habit {
     private Long id;
     private String name;
     private String description;
-    private User user;
     private HabitFormationStage formationStage;
     private HabitTrackings trackings;
     private Badge badge;
+
+    public Habit() {
+    }
 
     public Habit(Long id, String name, String description) {
         this.id = id;
@@ -48,9 +50,19 @@ public class Habit {
         this.badge = badge;
     }
 
+    public Habit(String name, String description, HabitTrackings trackings, Badge badge) {
+        this.name = name;
+        this.description = description;
+        this.trackings = trackings;
+        this.badge = badge;
+    }
+
     public void updateBadgeLevel() {
         int currenMaxStreak = this.trackings.countMaxStreak();
         Badge newBadge = Badge.findBadgeByStreak(currenMaxStreak);
+        if (this.badge == null) {
+            this.badge = Badge.UN_RANK;
+        }
         if (newBadge.isHigherTier(this.badge)) {
             this.badge = newBadge;
         }
