@@ -1,9 +1,12 @@
 package com.example.demo.infrastructure.entity;
 
+import com.example.demo.domain.model.Badge;
 import com.example.demo.domain.model.Habit;
 import com.example.demo.domain.model.HabitTracking;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -41,9 +44,13 @@ public class HabitEntity {
     @OneToMany(mappedBy = "habit", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HabitTrackingEntity> trackings = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    private Badge badge;
+
     public HabitEntity(String name, String description) {
         this.name = name;
         this.description = description;
+        this.badge = Badge.UN_RANK;
     }
 
     public HabitEntity(Long id, String name, String description, HabitFormationStageEntity formationStage,
@@ -53,6 +60,7 @@ public class HabitEntity {
         this.description = description;
         this.formationStage = formationStage;
         this.trackings = trackings;
+        this.badge = Badge.UN_RANK;
     }
 
     public Habit toHabit() {
@@ -61,7 +69,8 @@ public class HabitEntity {
                 name,
                 description,
                 formationStage.toFormationStage(),
-                trackings.stream().map(HabitTrackingEntity::toHabitTracking).toList()
+                trackings.stream().map(HabitTrackingEntity::toHabitTracking).toList(),
+                badge
         );
     }
 
@@ -70,6 +79,7 @@ public class HabitEntity {
         habitEntity.id = habit.getId();
         habitEntity.name = habit.getName();
         habitEntity.description = habit.getDescription();
+        habitEntity.badge = habit.getBadge();
 
         HabitFormationStageEntity habitFormationStageEntity = HabitFormationStageEntity.fromHabitFormationStage(habit.getFormationStage());
         habitEntity.addHabitFormationStage(habitFormationStageEntity);
