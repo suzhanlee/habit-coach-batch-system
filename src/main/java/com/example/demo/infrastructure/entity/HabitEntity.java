@@ -1,6 +1,7 @@
 package com.example.demo.infrastructure.entity;
 
 import com.example.demo.domain.model.Habit;
+import com.example.demo.domain.model.HabitTracking;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -45,20 +46,53 @@ public class HabitEntity {
         this.description = description;
     }
 
+    public HabitEntity(Long id, String name, String description, HabitFormationStageEntity formationStage,
+                       List<HabitTrackingEntity> trackings) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.formationStage = formationStage;
+        this.trackings = trackings;
+    }
+
     public Habit toHabit() {
-        return new Habit(id, name, description);
+        return new Habit(
+                id,
+                name,
+                description,
+                formationStage.toFormationStage(),
+                trackings.stream().map(HabitTrackingEntity::toHabitTracking).toList()
+        );
+    }
+
+    public static HabitEntity fromHabit(Habit habit) {
+        HabitEntity habitEntity = new HabitEntity();
+        habitEntity.id = habit.getId();
+        habitEntity.name = habit.getName();
+        habitEntity.description = habit.getDescription();
+
+        HabitFormationStageEntity habitFormationStageEntity = HabitFormationStageEntity.fromHabitFormationStage(habit.getFormationStage());
+        habitEntity.addHabitFormationStage(habitFormationStageEntity);
+
+        for (HabitTracking habitTracking : habit.getTrackings().habitTrackings()) {
+            HabitTrackingEntity habitTrackingEntity = HabitTrackingEntity.fromHabitTracking(habitTracking);
+            habitEntity.addHabitTrackingEntity(habitTrackingEntity);
+        }
+
+        return habitEntity;
     }
 
     public void addUserEntity(UserEntity userEntity) {
         this.user = userEntity;
-        userEntity.addHabitEntity(this);
     }
 
-    public void addHabitFormationStageEntity(HabitFormationStageEntity habitFormationStageEntity) {
+    public void addHabitFormationStage(HabitFormationStageEntity habitFormationStageEntity) {
         this.formationStage = habitFormationStageEntity;
+        habitFormationStageEntity.addHabitEntity(this);
     }
 
     public void addHabitTrackingEntity(HabitTrackingEntity habitTrackingEntity) {
         this.trackings.add(habitTrackingEntity);
+        habitTrackingEntity.addHabitEntity(this);
     }
 }
