@@ -14,6 +14,10 @@ public class HabitTracking {
         this.completedDate = completedDate;
     }
 
+    public HabitTracking(LocalDate completedDate) {
+        this.completedDate = completedDate;
+    }
+
     public int compareCompletedDate(HabitTracking habitTracking) {
         return this.completedDate.compareTo(habitTracking.completedDate);
     }

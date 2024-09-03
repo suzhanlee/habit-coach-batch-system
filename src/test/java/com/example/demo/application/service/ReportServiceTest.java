@@ -69,6 +69,11 @@ class ReportServiceTest {
         public List<Habit> findHabitList(Long userId) {
             return List.of(new Habit(1L, "독서", "책 읽기"));
         }
+
+        @Override
+        public void saveAll(List<Habit> habits) {
+            System.out.println("FakeHabitRepository.saveAll");
+        }
     }
 
     private static class FakeGptClient implements LLMClient {

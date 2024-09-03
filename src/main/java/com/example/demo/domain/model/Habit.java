@@ -57,6 +57,14 @@ public class Habit {
         this.badge = badge;
     }
 
+    public Habit(String name, String description, HabitFormationStage formationStage, List<HabitTracking> trackings) {
+        this.name = name;
+        this.description = description;
+        this.formationStage = formationStage;
+        this.trackings = new HabitTrackings(trackings);
+        this.badge = Badge.UN_RANK;
+    }
+
     public void updateBadgeLevel() {
         int currenMaxStreak = this.trackings.countMaxStreak();
         Badge newBadge = Badge.findBadgeByStreak(currenMaxStreak);

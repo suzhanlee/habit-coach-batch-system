@@ -70,4 +70,8 @@ public class UserRepositoryImpl implements UserRepository, UserRepositoryCustom 
     public List<User> findByName(String name) {
         return userJpaRepository.findByName(name).stream().map(UserEntity::toUser).toList();
     }
+
+    public void deleteAllInBatch() {
+        userJpaRepository.deleteAllInBatch();
+    }
 }

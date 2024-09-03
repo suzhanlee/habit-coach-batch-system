@@ -6,4 +6,6 @@ import java.util.List;
 public interface HabitRepository {
 
     List<Habit> findHabitList(Long userId);
+
+    void saveAll(List<Habit> habits);
 }

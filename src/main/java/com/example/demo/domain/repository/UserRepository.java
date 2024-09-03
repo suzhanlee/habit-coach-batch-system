@@ -14,4 +14,6 @@ public interface UserRepository {
     void delete(User user);
 
     List<User> findByName(String name);
+
+    void deleteAllInBatch();
 }

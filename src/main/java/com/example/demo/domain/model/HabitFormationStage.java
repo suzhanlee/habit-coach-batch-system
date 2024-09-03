@@ -24,4 +24,8 @@ public class HabitFormationStage {
         this.id = id;
         this.stage = stage;
     }
+
+    public HabitFormationStage(int stage) {
+        this.stage = stage;
+    }
 }

@@ -24,6 +24,12 @@ public class User {
         this.habits = habits;
     }
 
+    public User(String name, String email, List<Habit> habits) {
+        this.name = name;
+        this.email = email;
+        this.habits = habits;
+    }
+
     public void refreshHabitTiers() {
         for (Habit habit : habits) {
             habit.updateBadgeLevel();

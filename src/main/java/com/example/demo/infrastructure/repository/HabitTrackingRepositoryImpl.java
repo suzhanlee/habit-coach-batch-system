@@ -17,11 +17,9 @@ public class HabitTrackingRepositoryImpl implements HabitTrackingRepository {
 
     @Override
     public List<HabitTracking> findHabitTrackingList(Long habitId, LocalDate startDate, LocalDate endDate) {
-        Habit habit = habitJpaRepository.findById(habitId).orElseThrow().toHabit();
-
         return habitTrackingJpaRepository.findAllByHabitIdAndCompletedDateBetween(habitId, startDate, endDate)
                 .stream()
-                .map(entity -> entity.toHabitTracking(habit))
+                .map(entity -> entity.toHabitTracking())
                 .toList();
     }
 
