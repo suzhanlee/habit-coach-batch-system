@@ -6,6 +6,7 @@ import static org.quartz.TriggerBuilder.newTrigger;
 
 import org.quartz.JobDetail;
 import org.quartz.Trigger;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +27,7 @@ public class ReportSchedularConfig {
     }
 
     @Bean
-    public Trigger reportBatchJobTrigger(JobDetail reportBatchJobDetail) {
+    public Trigger reportBatchJobTrigger(@Qualifier("reportBatchJobDetail") JobDetail reportBatchJobDetail) {
         return newTrigger()
                 .forJob(reportBatchJobDetail)
                 .withIdentity("reportBatchTrigger", "reportBatchGroup")
@@ -35,7 +36,7 @@ public class ReportSchedularConfig {
     }
 
     @Bean
-    public SchedulerFactoryBean reportScheduler(Trigger reportBatchJobTrigger, JobDetail reportBatchJobDetail) {
+    public SchedulerFactoryBean reportScheduler(@Qualifier("reportBatchJobTrigger") Trigger reportBatchJobTrigger, @Qualifier("reportBatchJobDetail") JobDetail reportBatchJobDetail) {
         SchedulerFactoryBean schedulerFactory = new SchedulerFactoryBean();
         schedulerFactory.setJobDetails(reportBatchJobDetail);
         schedulerFactory.setTriggers(reportBatchJobTrigger);
