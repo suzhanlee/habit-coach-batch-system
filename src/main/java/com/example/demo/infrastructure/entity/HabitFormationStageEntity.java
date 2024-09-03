@@ -1,5 +1,6 @@
 package com.example.demo.infrastructure.entity;
 
+import com.example.demo.domain.model.HabitFormationStage;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -44,8 +45,21 @@ public class HabitFormationStageEntity {
         this.feedback = feedback;
     }
 
+    public HabitFormationStage toFormationStage() {
+        return new HabitFormationStage(id, stage, questions, answers, feedback);
+    }
+
+    public static HabitFormationStageEntity fromHabitFormationStage(HabitFormationStage formationStage) {
+        HabitFormationStageEntity stageEntity = new HabitFormationStageEntity();
+        stageEntity.id = formationStage.getId();
+        stageEntity.stage = formationStage.getStage();
+        stageEntity.questions = formationStage.getQuestions();
+        stageEntity.answers = formationStage.getAnswers();
+        stageEntity.feedback = formationStage.getFeedback();
+        return stageEntity;
+    }
+
     public void addHabitEntity(HabitEntity habitEntity) {
         this.habit = habitEntity;
-        habitEntity.addHabitFormationStageEntity(this);
     }
 }
