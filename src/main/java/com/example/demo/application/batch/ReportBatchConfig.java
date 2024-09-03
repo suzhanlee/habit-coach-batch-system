@@ -47,7 +47,7 @@ public class ReportBatchConfig {
     }
 
     @Bean
-    public Job reportBatchJob(JobRepository jobRepository, Step reportStep) {
+    public Job reportBatchJob(JobRepository jobRepository, @Qualifier("reportStep") Step reportStep) {
         return new JobBuilder("reportBatchJob", jobRepository)
                 .start(reportStep)
                 .build();
