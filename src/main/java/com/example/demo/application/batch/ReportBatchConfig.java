@@ -27,7 +27,6 @@ import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-@EnableBatchProcessing
 @Slf4j
 public class ReportBatchConfig {
 

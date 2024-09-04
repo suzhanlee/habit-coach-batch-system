@@ -20,7 +20,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-@EnableBatchProcessing
 public class BadgeBatchConfig {
 
     private final HabitRepository habitRepository;
@@ -39,18 +38,17 @@ public class BadgeBatchConfig {
     }
 
     @Bean
-    public Step badgeStep(JobRepository jobRepository, PlatformTransactionManager transactionManager,
-                          HabitRepository habitRepository, EntityManagerFactory entityManagerFactory) {
+    public Step badgeStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
         return new StepBuilder("badgeStep", jobRepository)
                 .chunk(10, transactionManager)
-                .reader(badgeItemReader(entityManagerFactory))
+                .reader(badgeItemReader())
                 .processor(badgeItemProcessor())
-                .writer(badgeItemWriter(habitRepository))
+                .writer(badgeItemWriter())
                 .build();
     }
 
     @Bean
-    public ItemReader badgeItemReader(EntityManagerFactory entityManagerFactory) {
+    public ItemReader badgeItemReader() {
         return new BadgeReader(entityManagerFactory);
     }
 
@@ -60,7 +58,7 @@ public class BadgeBatchConfig {
     }
 
     @Bean
-    public ItemWriter badgeItemWriter(HabitRepository habitRepository) {
+    public ItemWriter badgeItemWriter() {
         return new BadgeWriter(habitRepository);
     }
 }
