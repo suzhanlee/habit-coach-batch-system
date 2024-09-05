@@ -117,8 +117,8 @@ where not exists(select * from BATCH_JOB_SEQ);
 
 -- Users
 INSERT INTO users (id, name, email)
-VALUES (1, 'John Doe', 'john@example.com'),
-       (2, 'Jane Smith', 'jane@example.com');
+VALUES (1, 'John Doe', 'wlscww@kakao.com'),
+       (2, 'Jane Smith', 'wlscwww@gmail.com');
 
 -- Habits
 INSERT INTO habits (id, name, description, user_id, badge)
