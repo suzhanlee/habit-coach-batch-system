@@ -28,7 +28,7 @@ public class ReportReader implements ItemStreamReader<UserEntity>, InitializingB
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         Assert.notNull(entityManagerFactory, "EntityManagerFactory must not be null");
         Assert.notNull(reportTime, "ReportTime must not be null");
         Assert.notNull(validator, "Validator must not be null");

@@ -2,8 +2,8 @@ package com.example.demo.application.batch;
 
 import com.example.demo.domain.repository.HabitRepository;
 import com.example.demo.domain.service.BadgeProcessor;
+import com.example.demo.domain.service.BadgeReader;
 import com.example.demo.domain.service.BadgeWriter;
-import com.example.demo.infrastructure.entity.HabitEntity;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -13,7 +13,6 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemStreamReader;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,13 +47,8 @@ public class BadgeBatchConfig {
     }
 
     @Bean
-    public ItemStreamReader<HabitEntity> badgeItemReader() {
-        return new JpaPagingItemReaderBuilder<HabitEntity>()
-                .name("badgeReader")
-                .queryString("SELECT h FROM HabitEntity h")
-                .entityManagerFactory(entityManagerFactory)
-                .pageSize(10)
-                .build();
+    public ItemStreamReader badgeItemReader() {
+        return new BadgeReader(entityManagerFactory);
     }
 
     @Bean
