@@ -17,7 +17,7 @@ public class BadgeWriter implements ItemWriter<Habit> {
     }
 
     @Override
-    public void write(Chunk<? extends Habit> chunk) throws Exception {
+    public void write(Chunk<? extends Habit> chunk) {
         habitRepository.saveAll((List<Habit>) chunk.getItems());
     }
 }

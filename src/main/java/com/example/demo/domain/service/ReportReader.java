@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Map;
+import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamException;
 import org.springframework.batch.item.ItemStreamReader;
 import org.springframework.batch.item.database.JpaPagingItemReader;
@@ -71,12 +72,12 @@ public class ReportReader implements ItemStreamReader<UserEntity>, InitializingB
     }
 
     @Override
-    public void open(org.springframework.batch.item.ExecutionContext executionContext) throws ItemStreamException {
+    public void open(ExecutionContext executionContext) throws ItemStreamException {
         delegate.open(executionContext);
     }
 
     @Override
-    public void update(org.springframework.batch.item.ExecutionContext executionContext) throws ItemStreamException {
+    public void update(ExecutionContext executionContext) throws ItemStreamException {
         delegate.update(executionContext);
     }
 

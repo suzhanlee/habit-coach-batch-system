@@ -7,7 +7,7 @@ import org.springframework.batch.item.ItemProcessor;
 public class BadgeProcessor implements ItemProcessor<HabitEntity, Habit> {
 
     @Override
-    public Habit process(HabitEntity entity) throws Exception {
+    public Habit process(HabitEntity entity) {
         Habit habit = entity.toHabit();
         habit.updateBadgeLevel();
         return habit;
