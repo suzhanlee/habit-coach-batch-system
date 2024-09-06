@@ -13,10 +13,12 @@ import org.springframework.util.Assert;
 public class BadgeReader implements ItemStreamReader<HabitEntity>, InitializingBean {
 
     private final EntityManagerFactory entityManagerFactory;
+    private final Validator validator;
     private JpaPagingItemReader<HabitEntity> delegate;
 
-    public BadgeReader(EntityManagerFactory entityManagerFactory) {
+    public BadgeReader(EntityManagerFactory entityManagerFactory, Validator validator) {
         this.entityManagerFactory = entityManagerFactory;
+        this.validator = validator;
     }
 
     @Override
@@ -33,7 +35,11 @@ public class BadgeReader implements ItemStreamReader<HabitEntity>, InitializingB
 
     @Override
     public HabitEntity read() throws Exception {
-        return delegate.read();
+        HabitEntity habitEntity = delegate.read();
+        if (habitEntity != null && !validator.isValid(habitEntity)) {
+            throw new IllegalStateException("validate error : habit entity 의 형식이 올바르지 않습니다.");
+        }
+        return habitEntity;
     }
 
     @Override

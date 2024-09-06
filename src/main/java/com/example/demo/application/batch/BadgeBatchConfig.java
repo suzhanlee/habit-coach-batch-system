@@ -4,6 +4,7 @@ import com.example.demo.domain.repository.HabitRepository;
 import com.example.demo.domain.service.BadgeProcessor;
 import com.example.demo.domain.service.BadgeReader;
 import com.example.demo.domain.service.BadgeWriter;
+import com.example.demo.domain.service.Validator;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -23,10 +24,13 @@ public class BadgeBatchConfig {
 
     private final HabitRepository habitRepository;
     private final EntityManagerFactory entityManagerFactory;
+    private final Validator BadgeBatchJobValidator;
 
-    public BadgeBatchConfig(HabitRepository habitRepository, EntityManagerFactory entityManagerFactory) {
+    public BadgeBatchConfig(HabitRepository habitRepository, EntityManagerFactory entityManagerFactory,
+                            Validator badgeBatchJobValidator) {
         this.habitRepository = habitRepository;
         this.entityManagerFactory = entityManagerFactory;
+        this.BadgeBatchJobValidator = badgeBatchJobValidator;
     }
 
     @Bean
@@ -48,7 +52,7 @@ public class BadgeBatchConfig {
 
     @Bean
     public ItemStreamReader badgeItemReader() {
-        return new BadgeReader(entityManagerFactory);
+        return new BadgeReader(entityManagerFactory, BadgeBatchJobValidator);
     }
 
     @Bean

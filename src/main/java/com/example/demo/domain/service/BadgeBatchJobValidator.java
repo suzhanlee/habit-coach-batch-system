@@ -1,7 +1,9 @@
 package com.example.demo.domain.service;
 
 import com.example.demo.infrastructure.entity.HabitEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BadgeBatchJobValidator implements Validator<HabitEntity> {
 
     @Override
