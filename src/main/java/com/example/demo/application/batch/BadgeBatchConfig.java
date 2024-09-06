@@ -1,11 +1,13 @@
 package com.example.demo.application.batch;
 
 import com.example.demo.domain.repository.HabitRepository;
+import com.example.demo.domain.service.BadgeBatchContext;
 import com.example.demo.domain.service.BadgeProcessor;
 import com.example.demo.domain.service.BadgeReader;
 import com.example.demo.domain.service.BadgeWriter;
 import com.example.demo.domain.service.Validator;
 import jakarta.persistence.EntityManagerFactory;
+import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -25,12 +27,18 @@ public class BadgeBatchConfig {
     private final HabitRepository habitRepository;
     private final EntityManagerFactory entityManagerFactory;
     private final Validator BadgeBatchJobValidator;
+    private final BadgeBatchContext badgeReaderBatchContextManager;
+    private final BadgeBatchContext badgeProcessorBatchContextManager;
 
     public BadgeBatchConfig(HabitRepository habitRepository, EntityManagerFactory entityManagerFactory,
-                            Validator badgeBatchJobValidator) {
+                            Validator badgeBatchJobValidator,
+                            @Qualifier("badgeReaderBatchContextManager") BadgeBatchContext badgeReaderBatchContextManager,
+                            @Qualifier("badgeProcessorBatchContextManager") BadgeBatchContext badgeProcessorBatchContextManager) {
         this.habitRepository = habitRepository;
         this.entityManagerFactory = entityManagerFactory;
         this.BadgeBatchJobValidator = badgeBatchJobValidator;
+        this.badgeReaderBatchContextManager = badgeReaderBatchContextManager;
+        this.badgeProcessorBatchContextManager = badgeProcessorBatchContextManager;
     }
 
     @Bean
@@ -41,23 +49,25 @@ public class BadgeBatchConfig {
     }
 
     @Bean
-    public Step badgeStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+    public Step badgeStep(JobRepository jobRepository, PlatformTransactionManager transactionManager,
+                          @Qualifier("badgeChunkListener") ChunkListener chunkListener) {
         return new StepBuilder("badgeStep", jobRepository)
                 .chunk(10, transactionManager)
                 .reader(badgeItemReader())
                 .processor(badgeItemProcessor())
                 .writer(badgeItemWriter())
+                .listener(chunkListener)
                 .build();
     }
 
     @Bean
     public ItemStreamReader badgeItemReader() {
-        return new BadgeReader(entityManagerFactory, BadgeBatchJobValidator);
+        return new BadgeReader(entityManagerFactory, BadgeBatchJobValidator, badgeReaderBatchContextManager);
     }
 
     @Bean
     public ItemProcessor badgeItemProcessor() {
-        return new BadgeProcessor();
+        return new BadgeProcessor(badgeProcessorBatchContextManager);
     }
 
     @Bean

@@ -58,7 +58,7 @@ public class ReportBatchConfig {
                            @Qualifier("reportProcessorValidator") Validator reportProcessorValidator,
                            @Qualifier("reportReaderReportBatchContextManager") ReportBatchContext readerReportBatchContextManager,
                            @Qualifier("reportProcessorReportBatchContextManager") ReportBatchContext processorReportBatchContextManager,
-                           ChunkListener chunkListener) {
+                           @Qualifier("reportChunkListener") ChunkListener chunkListener) {
         return new StepBuilder("reportStep", jobRepository)
                 .<UserEntity, ReportData>chunk(10, transactionManager)
                 .reader(userWithHabitsReader(entityManagerFactory, null, userWithHabitReaderValidator,

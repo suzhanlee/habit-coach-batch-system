@@ -14,11 +14,14 @@ public class BadgeReader implements ItemStreamReader<HabitEntity>, InitializingB
 
     private final EntityManagerFactory entityManagerFactory;
     private final Validator validator;
+    private final BadgeBatchContext badgeBatchContext;
     private JpaPagingItemReader<HabitEntity> delegate;
 
-    public BadgeReader(EntityManagerFactory entityManagerFactory, Validator validator) {
+    public BadgeReader(EntityManagerFactory entityManagerFactory, Validator validator,
+                       BadgeBatchContext badgeBatchContext) {
         this.entityManagerFactory = entityManagerFactory;
         this.validator = validator;
+        this.badgeBatchContext = badgeBatchContext;
     }
 
     @Override
@@ -38,6 +41,10 @@ public class BadgeReader implements ItemStreamReader<HabitEntity>, InitializingB
         HabitEntity habitEntity = delegate.read();
         if (habitEntity != null && !validator.isValid(habitEntity)) {
             throw new IllegalStateException("validate error : habit entity 의 형식이 올바르지 않습니다.");
+        }
+        if (habitEntity != null) {
+            badgeBatchContext.incrementHabitCnt();
+            badgeBatchContext.plusTrackingsCnt(habitEntity.getTrackings().size());
         }
         return habitEntity;
     }
