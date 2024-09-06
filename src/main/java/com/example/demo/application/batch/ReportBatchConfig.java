@@ -1,6 +1,6 @@
 package com.example.demo.application.batch;
 
-import com.example.demo.domain.service.BatchContext;
+import com.example.demo.domain.service.ReportBatchContext;
 import com.example.demo.domain.service.EmailService;
 import com.example.demo.domain.service.ReportProcessor;
 import com.example.demo.domain.service.ReportReader;
@@ -56,14 +56,14 @@ public class ReportBatchConfig {
                            EntityManagerFactory entityManagerFactory,
                            @Qualifier("userWithHabitReaderValidator") Validator userWithHabitReaderValidator,
                            @Qualifier("reportProcessorValidator") Validator reportProcessorValidator,
-                           @Qualifier("readerBatchContextManager") BatchContext readerBatchContextManager,
-                           @Qualifier("processorBatchContextManager") BatchContext processorBatchContextManager,
+                           @Qualifier("reportReaderReportBatchContextManager") ReportBatchContext readerReportBatchContextManager,
+                           @Qualifier("reportProcessorReportBatchContextManager") ReportBatchContext processorReportBatchContextManager,
                            ChunkListener chunkListener) {
         return new StepBuilder("reportStep", jobRepository)
                 .<UserEntity, ReportData>chunk(10, transactionManager)
                 .reader(userWithHabitsReader(entityManagerFactory, null, userWithHabitReaderValidator,
-                        readerBatchContextManager))
-                .processor(reportProcessor(null, reportProcessorValidator, processorBatchContextManager))
+                        readerReportBatchContextManager))
+                .processor(reportProcessor(null, reportProcessorValidator, processorReportBatchContextManager))
                 .writer(reportWriter())
                 .listener(chunkListener)
                 .build();
@@ -74,16 +74,16 @@ public class ReportBatchConfig {
     public ItemStreamReader<UserEntity> userWithHabitsReader(EntityManagerFactory entityManagerFactory,
                                                              @Value("#{jobParameters['time']}") Long reportTime,
                                                              Validator<UserEntity> validator,
-                                                             @Qualifier("readerBatchContextManager") BatchContext batchContext) {
-        return new ReportReader(entityManagerFactory, reportTime, validator, batchContext);
+                                                             @Qualifier("reportReaderReportBatchContextManager") ReportBatchContext reportBatchContext) {
+        return new ReportReader(entityManagerFactory, reportTime, validator, reportBatchContext);
     }
 
     @Bean
     @StepScope
     public ItemProcessor<UserEntity, ReportData> reportProcessor(@Value("#{jobParameters['time']}") Long reportTime,
                                                                  Validator<ReportData> validator,
-                                                                 @Qualifier("processorBatchContextManager") BatchContext batchContext) {
-        return new ReportProcessor(reportService, reportTime, validator, batchContext);
+                                                                 @Qualifier("reportProcessorReportBatchContextManager") ReportBatchContext reportBatchContext) {
+        return new ReportProcessor(reportService, reportTime, validator, reportBatchContext);
     }
 
     @Bean

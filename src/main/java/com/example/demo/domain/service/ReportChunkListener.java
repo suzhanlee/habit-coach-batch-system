@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReportChunkListener implements ChunkListener {
 
-    private final ReaderBatchContextManager readerContext;
-    private final ProcessorBatchContextManager processContext;
+    private final ReportReaderReportBatchContextManager readerContext;
+    private final ReportProcessorReportBatchContextManager processContext;
 
-    public ReportChunkListener(ReaderBatchContextManager readerContext, ProcessorBatchContextManager processContext) {
+    public ReportChunkListener(ReportReaderReportBatchContextManager readerContext, ReportProcessorReportBatchContextManager processContext) {
         this.readerContext = readerContext;
         this.processContext = processContext;
     }

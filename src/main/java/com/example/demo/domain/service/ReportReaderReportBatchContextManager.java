@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProcessorBatchContextManager implements BatchContext {
+public class ReportReaderReportBatchContextManager implements ReportBatchContext {
 
     private ThreadLocal<Map<String, Integer>> context = ThreadLocal.withInitial(HashMap::new);
 

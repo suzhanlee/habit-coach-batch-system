@@ -11,14 +11,14 @@ public class ReportProcessor implements ItemProcessor<UserEntity, ReportData> {
     private final ReportService reportService;
     private final Long reportTime;
     private final Validator validator;
-    private final BatchContext batchContext;
+    private final ReportBatchContext reportBatchContext;
 
     public ReportProcessor(ReportService reportService, Long reportTime, Validator validator,
-                           BatchContext batchContext) {
+                           ReportBatchContext reportBatchContext) {
         this.reportService = reportService;
         this.reportTime = reportTime;
         this.validator = validator;
-        this.batchContext = batchContext;
+        this.reportBatchContext = reportBatchContext;
     }
 
     @Override
@@ -28,8 +28,8 @@ public class ReportProcessor implements ItemProcessor<UserEntity, ReportData> {
             throw new IllegalStateException("validate error : reportData의 형식이 올바르지 않습니다.");
         }
         if (reportData != null) {
-            batchContext.incrementUserCnt();
-            batchContext.plusHabitCnt(reportData.getHabitReportDatas().size());
+            reportBatchContext.incrementUserCnt();
+            reportBatchContext.plusHabitCnt(reportData.getHabitReportDatas().size());
         }
         return reportData;
     }

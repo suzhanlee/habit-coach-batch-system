@@ -16,7 +16,7 @@ class ReportProcessorTest {
         // given
         FakeReportService reportService = new FakeReportService();
         ReportProcessor reportProcessor = new ReportProcessor(reportService, System.currentTimeMillis(),
-                new ReportProcessorValidator(), new ProcessorBatchContextManager());
+                new ReportProcessorValidator(), new ReportProcessorReportBatchContextManager());
         UserEntity givenUserEntity = new UserEntity();
 
         // when
