@@ -18,13 +18,15 @@ public class ReportReader implements ItemStreamReader<UserEntity>, InitializingB
     private final EntityManagerFactory entityManagerFactory;
     private final Long reportTime;
     private final Validator<UserEntity> validator;
+    private final BatchContext batchContext;
     private JpaPagingItemReader<UserEntity> delegate;
 
     public ReportReader(EntityManagerFactory entityManagerFactory, Long reportTime,
-                        Validator<UserEntity> validator) {
+                        Validator<UserEntity> validator, BatchContext batchContext) {
         this.entityManagerFactory = entityManagerFactory;
         this.reportTime = reportTime;
         this.validator = validator;
+        this.batchContext = batchContext;
     }
 
     @Override
@@ -60,6 +62,10 @@ public class ReportReader implements ItemStreamReader<UserEntity>, InitializingB
         UserEntity userEntity = delegate.read();
         if (userEntity != null && !validator.isValid(userEntity)) {
             throw new IllegalStateException("validate error : user entity 의 형식이 올바르지 않습니다.");
+        }
+        if (userEntity != null) {
+            batchContext.incrementUserCnt();
+            batchContext.plusHabitCnt(userEntity.getHabits().size());
         }
         return userEntity;
     }
