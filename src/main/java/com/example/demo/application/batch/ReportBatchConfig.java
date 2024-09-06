@@ -1,16 +1,14 @@
 package com.example.demo.application.batch;
 
 import com.example.demo.domain.service.EmailService;
+import com.example.demo.domain.service.ReportReader;
 import com.example.demo.domain.service.ReportProcessor;
 import com.example.demo.domain.service.ReportService;
 import com.example.demo.domain.service.ReportWriter;
+import com.example.demo.domain.service.Validator;
 import com.example.demo.dto.ReportData;
 import com.example.demo.infrastructure.entity.UserEntity;
 import jakarta.persistence.EntityManagerFactory;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -21,7 +19,6 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemStreamReader;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -54,10 +51,10 @@ public class ReportBatchConfig {
 
     @Bean
     public Step reportStep(JobRepository jobRepository, PlatformTransactionManager transactionManager,
-                           EntityManagerFactory entityManagerFactory) {
+                           EntityManagerFactory entityManagerFactory, Validator validator) {
         return new StepBuilder("reportStep", jobRepository)
                 .<UserEntity, ReportData>chunk(10, transactionManager)
-                .reader(userWithHabitsReader(entityManagerFactory, null))
+                .reader(userWithHabitsReader(entityManagerFactory, null, validator))
                 .processor(reportProcessor(null))
                 .writer(reportWriter())
                 .build();
@@ -66,29 +63,10 @@ public class ReportBatchConfig {
     @Bean
     @StepScope
     public ItemStreamReader<UserEntity> userWithHabitsReader(EntityManagerFactory entityManagerFactory,
-                                                             @Value("#{jobParameters['time']}") Long reportTime) {
-        return new JpaPagingItemReaderBuilder<UserEntity>()
-                .name("userWithHabitsReader")
-                .entityManagerFactory(entityManagerFactory)
-                .queryString(
-                        "SELECT DISTINCT u FROM UserEntity u " +
-                                "LEFT JOIN FETCH u.habits h " +
-                                "LEFT JOIN FETCH h.formationStage " +
-                                "LEFT JOIN h.trackings t " +
-                                "WHERE t.completedDate BETWEEN :startDate AND :endDate " +
-                                "OR t.completedDate IS NULL")
-                .parameterValues(getParameterValues(reportTime))
-                .pageSize(10)
-                .build();
+                                                             @Value("#{jobParameters['time']}") Long reportTime,
+                                                             Validator<UserEntity> validator) {
+        return new ReportReader(entityManagerFactory, reportTime, validator);
     }
-
-    private Map<String, Object> getParameterValues(Long reportTime) {
-        LocalDate startDate = LocalDate.ofInstant(Instant.ofEpochMilli(reportTime), ZoneId.systemDefault())
-                .withDayOfMonth(1);
-        LocalDate endDate = startDate.plusMonths(1).minusDays(1);
-        return Map.of("startDate", startDate, "endDate", endDate);
-    }
-
 
     @Bean
     @StepScope
