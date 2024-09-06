@@ -2,7 +2,7 @@ package com.example.demo.domain.service;
 
 import com.example.demo.infrastructure.entity.HabitEntity;
 
-public class BadgeReaderValidator implements Validator<HabitEntity> {
+public class BadgeBatchJobValidator implements Validator<HabitEntity> {
 
     @Override
     public boolean isValid(HabitEntity habitEntity) {
