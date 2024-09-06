@@ -1,8 +1,8 @@
 package com.example.demo.application.batch;
 
 import com.example.demo.domain.service.EmailService;
-import com.example.demo.domain.service.ReportReader;
 import com.example.demo.domain.service.ReportProcessor;
+import com.example.demo.domain.service.ReportReader;
 import com.example.demo.domain.service.ReportService;
 import com.example.demo.domain.service.ReportWriter;
 import com.example.demo.domain.service.Validator;
@@ -51,11 +51,13 @@ public class ReportBatchConfig {
 
     @Bean
     public Step reportStep(JobRepository jobRepository, PlatformTransactionManager transactionManager,
-                           EntityManagerFactory entityManagerFactory, Validator validator) {
+                           EntityManagerFactory entityManagerFactory,
+                           @Qualifier("userWithHabitReaderValidator") Validator userWithHabitReaderValidator,
+                           @Qualifier("reportProcessorValidator") Validator reportProcessorValidator) {
         return new StepBuilder("reportStep", jobRepository)
                 .<UserEntity, ReportData>chunk(10, transactionManager)
-                .reader(userWithHabitsReader(entityManagerFactory, null, validator))
-                .processor(reportProcessor(null))
+                .reader(userWithHabitsReader(entityManagerFactory, null, userWithHabitReaderValidator))
+                .processor(reportProcessor(null, reportProcessorValidator))
                 .writer(reportWriter())
                 .build();
     }
@@ -70,8 +72,9 @@ public class ReportBatchConfig {
 
     @Bean
     @StepScope
-    public ItemProcessor<UserEntity, ReportData> reportProcessor(@Value("#{jobParameters['time']}") Long reportTime) {
-        return new ReportProcessor(reportService, reportTime);
+    public ItemProcessor<UserEntity, ReportData> reportProcessor(@Value("#{jobParameters['time']}") Long reportTime,
+                                                                 Validator<ReportData> validator) {
+        return new ReportProcessor(reportService, reportTime, validator);
     }
 
     @Bean

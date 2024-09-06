@@ -2,6 +2,7 @@ package com.example.demo.domain.service;
 
 import com.example.demo.infrastructure.entity.HabitEntity;
 import jakarta.persistence.EntityManagerFactory;
+import org.springframework.batch.item.ItemStreamException;
 import org.springframework.batch.item.ItemStreamReader;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
@@ -23,7 +24,7 @@ public class BadgeReader implements ItemStreamReader<HabitEntity>, InitializingB
 
         this.delegate = new JpaPagingItemReaderBuilder<HabitEntity>()
                 .name("badgeReader")
-                .queryString("SELECT h FROM Habit h")
+                .queryString("SELECT h FROM HabitEntity h")
                 .entityManagerFactory(entityManagerFactory)
                 .pageSize(10)
                 .build();
@@ -32,5 +33,20 @@ public class BadgeReader implements ItemStreamReader<HabitEntity>, InitializingB
     @Override
     public HabitEntity read() throws Exception {
         return delegate.read();
+    }
+
+    @Override
+    public void open(org.springframework.batch.item.ExecutionContext executionContext) throws ItemStreamException {
+        delegate.open(executionContext);
+    }
+
+    @Override
+    public void update(org.springframework.batch.item.ExecutionContext executionContext) throws ItemStreamException {
+        delegate.update(executionContext);
+    }
+
+    @Override
+    public void close() throws ItemStreamException {
+        delegate.close();
     }
 }

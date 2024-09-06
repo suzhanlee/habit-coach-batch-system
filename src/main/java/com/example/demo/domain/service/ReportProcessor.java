@@ -10,14 +10,20 @@ public class ReportProcessor implements ItemProcessor<UserEntity, ReportData> {
 
     private final ReportService reportService;
     private final Long reportTime;
+    private final Validator validator;
 
-    public ReportProcessor(ReportService reportService, Long reportTime) {
+    public ReportProcessor(ReportService reportService, Long reportTime, Validator validator) {
         this.reportService = reportService;
         this.reportTime = reportTime;
+        this.validator = validator;
     }
 
     @Override
     public ReportData process(UserEntity userEntity) {
-        return reportService.createReportData(userEntity.toUser(), reportTime);
+        ReportData reportData = reportService.createReportData(userEntity.toUser(), reportTime);
+        if (reportData != null && !validator.isValid(reportData)) {
+            throw new IllegalStateException("validate error : reportData의 형식이 올바르지 않습니다.");
+        }
+        return reportData;
     }
 }
