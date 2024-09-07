@@ -31,7 +31,7 @@ public class BadgeBatchConfig {
     private final BadgeBatchContext badgeProcessorBatchContextManager;
 
     public BadgeBatchConfig(HabitRepository habitRepository, EntityManagerFactory entityManagerFactory,
-                            Validator badgeBatchJobValidator,
+                            @Qualifier("badgeBatchJobValidator") Validator badgeBatchJobValidator,
                             @Qualifier("badgeReaderBatchContextManager") BadgeBatchContext badgeReaderBatchContextManager,
                             @Qualifier("badgeProcessorBatchContextManager") BadgeBatchContext badgeProcessorBatchContextManager) {
         this.habitRepository = habitRepository;
